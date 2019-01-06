@@ -56,6 +56,7 @@ Zitieren aus *BibTeX*:
 - [@marmot2010fair; @lancee2012income]
 - [@humer2013bedeutung, p. 571]
 - @humer2013bedeutung
+- @kranzinger2018decomposition
 
 Block-Zitate:
 
@@ -114,4 +115,3 @@ Horizontale Linien:
 
 # Literatur
 
-<!-- Leer lassen -->
