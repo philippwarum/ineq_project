@@ -1,6 +1,13 @@
 ## Download and store EU28 data
 ###############################
 
+
+
+# load packages -----------------------------------------------------------
+
+library(dplyr)
+
+
 # Download Data ------------------------------------------------------------
 
 silc.p.store <- NULL
@@ -10,14 +17,14 @@ silc.r.store <- NULL
 
 silc.p <- tbl(pg, "pp") %>%
   filter(pb010 %in% c(2004, 2005, 2006)) %>%
-  select(pb010, pb020, pb030, pb040, pb150, py010g, py020g, py050g, py050n, px010, px030, py080g, py090g, py100g, py110g, py120g, py130g, py140g) %>%
+  select(pb010, pb020, pb030, pb040, pb140, pb150, py010g, py020g, py050g, py050n, px010, px030, py080g, py090g, py100g, py110g, py120g, py130g, py140g) %>%
   collect(n = Inf)
 
 silc.p.store <- silc.p %>% rename(py021g = py020g)
 
 for(p in 7:17){
   silc.p <- tbl(pg, paste0("c",formatC(p,width = 2, format = "d", flag = "0"), "p")) %>%
-    select(pb010, pb020, pb030, pb040, pb150, py010g, py021g, py050g, py050n, px010, px030, py080g, py090g, py100g, py110g, py120g, py130g, py140g) %>%
+    select(pb010, pb020, pb030, pb040, pb140, pb150, py010g, py021g, py050g, py050n, px010, px030, py080g, py090g, py100g, py110g, py120g, py130g, py140g) %>%
     collect(n = Inf)
   silc.p.store <- rbind(silc.p.store, silc.p)
 }
