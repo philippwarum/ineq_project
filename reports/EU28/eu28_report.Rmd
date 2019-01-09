@@ -115,6 +115,10 @@ Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachte
 # Methodologie
 
 ## Daten
+Wir haben über die Jahre variierende Observationen ----- , da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
+Wir unterscheiden in den Berechnungen zwischen zweierlei Arten der Grundgesamtheit. Bei P1 wird die Annahme getroffen, dass das gesamte verfügbare Einkommen auf alle im Haushalt lebenden Personen gleich verteilt wird. 
+Bei P2 werden persönlichen Einkommen der Person zugeschrieben die sie erwirtschaftet, Einkommensarten die an den Haushalt gezahlt werden gleich an alle Mitglieder über neunzehn gleich aufgeteilt. 
+
 
 ## Indikatoren
 
@@ -128,17 +132,20 @@ Folgende Eigenschaften sind dabei zu beachten. Zum einen die Symmetrie was so vi
 Sowie das sogenannte Pigou-Dalton-Prinzip, welches besagt, dass ein Transfer der Einkommen von reich zu arm Ungleichheit reduziert. 
 All eben genannten Bedingungen erfüllt der Gini Index, welcher die Ungleichheit auf einem Intervall von 0 bis 1 beschreibt. Bei einem Gini- Index von 0 verdient jedes Individuum in der Population das gleiche, bei einem Gini-Index von 1 verdient eine Person das gesamte Einkommen.
 Der Theil Index basiert auf einer anderen Berechnung, welche den Vorteil hat, dass zu den vier eben genannten Bedingungen zerlegbar ist und man beispielsweise Untergruppen bilden kann, das ist mit dem Gini nicht möglich. 
-Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}{\mu})ln(\frac{y_i}{\mu})$$ 
+Das Minimum des Theil Indices ist 0 wie auch beim Gini und ln(N) das Maximum. 
+Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}{\mu})ln(\frac{y_i}{\mu})$$ [@Kranzinger]
 
-### Qantile 
+
+
+### Quantile 
 Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
 Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
 Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
 # Empirie
 
-Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlichtwurde vor allem an den untersuchten Ländern. Das Papier von @Beblo und Knaus (2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
-(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008. @Kranzinger (2018) hat den Theil- Index für die EU-28 mit 0,215 berechnet. 
+Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlichtwurde vor allem an den untersuchten Ländern. Das Papier von Beblo und Knaus (2001)  wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
+(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008. Kranzinger (2018) hat den Theil- Index für die EU-28 mit 0,215 berechnet. 
 Oben genannte Autoren beschäftigen sich auch mit der Frage der Demografie. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
 
 # Ergebnisse
