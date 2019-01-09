@@ -46,6 +46,7 @@ R-Code im Text: `r pi`
 LaTeX Formeln inline: ($e = mc^2$) und:
 
 $$\hat{\beta} = (X'X)^{-1}X'Y$$
+ 
 
 ![Bilder einfügen (xkcd)](img/xkcd_comparison.png){width=60%}
 
@@ -102,11 +103,35 @@ Horizontale Linien:
 
 # Einführung
 
+In dieser Arbeit werden wir basierend auf EU-SILC Daten über einen Zeitraum von 2004 bis 2017 die Einkommensverteilung der EU Staaten vergleichen. 
+Anfangs sind die EU25 inkludiert ab 2007 treten Bulgarien und Rumänien bei, im Jahr 2017 tritt Kroatien bei, womit die EU28 vervollständigt sind.
+Die EU-SILC Daten werden jährlich aus Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. 
+Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Daten auch wechselkursbereinigt.
+
+
 # Methodologie
 
 ## Daten
 
 ## Indikatoren
+
+###Median und Mittelwert 
+Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren. Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
+Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
+
+###Gini und Theil Index
+Da unser Fokus auf der Einkommensungleichheit liegt ist es wichtig ein geeignetes Maß dafür zu nutzen. 
+Folgende Eigenschaften sind dabei zu beachten. Zum einen die Symmetrie was so viel bedeutet wie: Wenn Individuen ihr Einkommen untereinander tauschen hat das keinen Effekt auf die Ungleichheit.  Des Weiteren soll die Unabhängigkeit der Populationsgröße und des Mittelwerts gegeben sein, wenn sich die Population verändert oder alle Einkommen sich verdoppeln bleibt die Ungleichheit unverändert. 
+Sowie das sogenannte Pigou-Dalton-Prinzip, welches besagt, dass ein Transfer der Einkommen von reich zu arm Ungleichheit reduziert. 
+All eben genannten Bedingungen erfüllt der Gini Index, welcher die Ungleichheit auf einem Intervall von 0 bis 1 beschreibt. Bei einem Gini- Index von 0 verdient jedes Individuum in der Population das gleiche, bei einem Gini-Index von 1 verdient eine Person das gesamte Einkommen.
+Der Theil Index basiert auf einer anderen Berechnung, welche den Vorteil hat, dass zu den vier eben genannten Bedingungen zerlegbar ist und man beispielsweise Untergruppen bilden kann, das ist mit dem Gini nicht möglich. 
+Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}{\mu})ln(\frac{y_i}{\mu})$$ 
+
+# Empirie
+
+Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlichtwurde vor allem an den untersuchten Ländern. Das Papier von @Beblo und Knaus (2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
+(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008. @Kranzinger (2018) hat den Theil- Index für die EU-28 mit 0,215 berechnet. 
+Oben genannte Autoren beschäftigen sich auch mit der Frage der Demografie. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
 
 # Ergebnisse
 
