@@ -1,4 +1,7 @@
----
+
+
+
+ ---
 title: "Einkommensverteilung in Österreich"
 subtitle: "2063 - Ökonomie der Verteilung"
 author: "Nikolas Kuschnig & Casper Engelen"
@@ -115,17 +118,22 @@ Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachte
 
 ## Indikatoren
 
-###Median und Mittelwert 
+### Median und Mittelwert 
 Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren. Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
 Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
 
-###Gini und Theil Index
+### Gini und Theil Index
 Da unser Fokus auf der Einkommensungleichheit liegt ist es wichtig ein geeignetes Maß dafür zu nutzen. 
 Folgende Eigenschaften sind dabei zu beachten. Zum einen die Symmetrie was so viel bedeutet wie: Wenn Individuen ihr Einkommen untereinander tauschen hat das keinen Effekt auf die Ungleichheit.  Des Weiteren soll die Unabhängigkeit der Populationsgröße und des Mittelwerts gegeben sein, wenn sich die Population verändert oder alle Einkommen sich verdoppeln bleibt die Ungleichheit unverändert. 
 Sowie das sogenannte Pigou-Dalton-Prinzip, welches besagt, dass ein Transfer der Einkommen von reich zu arm Ungleichheit reduziert. 
 All eben genannten Bedingungen erfüllt der Gini Index, welcher die Ungleichheit auf einem Intervall von 0 bis 1 beschreibt. Bei einem Gini- Index von 0 verdient jedes Individuum in der Population das gleiche, bei einem Gini-Index von 1 verdient eine Person das gesamte Einkommen.
 Der Theil Index basiert auf einer anderen Berechnung, welche den Vorteil hat, dass zu den vier eben genannten Bedingungen zerlegbar ist und man beispielsweise Untergruppen bilden kann, das ist mit dem Gini nicht möglich. 
 Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}{\mu})ln(\frac{y_i}{\mu})$$ 
+
+### Qantile 
+Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
+Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
+Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
 # Empirie
 
