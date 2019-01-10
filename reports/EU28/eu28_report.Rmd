@@ -187,7 +187,7 @@ load("../../data/eu28_indicators.RData")
 indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
 indicators.p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
 
-data_di <- indicators.p1 %>% select(year, contains("eptdi"))
+data_di <- indicators.p1 %>% select(contains("eptdi"))
 data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
 data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 
