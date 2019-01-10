@@ -11,6 +11,8 @@ library(eurostat)
 load("./data/silc_eu28.RData")
 
 
+
+
 # basic data manipulations ------------------------------------------------
 
 # drop Switzerland (CH), Iceland (IS), Norway (NO) and Serbia (RS)
@@ -38,6 +40,9 @@ silc.h.store$hb020[silc.h.store$hb020=="GR"] <- "EL"
 silc.d.store$db020[silc.d.store$db020=="GR"] <- "EL"
 silc.r.store$rb020[silc.r.store$rb020=="GR"] <- "EL"
 
+
+# Can we even compute meaningful statistics for the EU28?
+table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2017])
 
 
 # income aggregation ------------------------------------------------------

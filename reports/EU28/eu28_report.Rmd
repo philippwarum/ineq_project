@@ -25,7 +25,9 @@ knitr::opts_chunk$set(echo = TRUE)
 # Rmarkdown Demonstration
 
 ```{r, include=FALSE}
-cat("Ausgeführt, nichts angezeigt")
+# load packages
+library(dplyr)
+
 ```
 
 ```{r, eval=FALSE}
@@ -100,9 +102,11 @@ Horizontale Linien:
 
 # Einführung
 
-In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis von EU-SILC Daten über einen Zeitraum von 2004 bis 2017.
+In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis der EU-SILC Daten über einen Zeitraum von 2004 bis 2017. Während 2004 nur 10 Länder verfügbar
+
+
 Anfangs sind die EU25 inkludiert ab 2007 treten Bulgarien und Rumänien bei, im Jahr 2017 tritt Kroatien bei, womit die EU28 vervollständigt sind.
-Die EU-SILC Daten werden jährlich aus Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. 
+Die EU-SILC Daten werden jährlich auf Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. 
 Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Daten auch wechselkursbereinigt.
 
 
@@ -174,9 +178,6 @@ Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat se
 
 
 ```{r echo=FALSE, message=FALSE}
-
-
-library(dplyr)
 
 
 
