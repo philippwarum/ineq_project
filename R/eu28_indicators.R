@@ -7,8 +7,12 @@
 library(dplyr)
 library(survey)
 library(convey)
+library(eurostat)
 
 load("./data/silc_eu28.RData")
+
+
+rm(silc.d.store, silc.h.store, silc.p.store, silc.r.store)
 
 
 
@@ -20,10 +24,20 @@ silc.p2.ppp.store <- silc.p2.ppp.store %>% filter_at(vars(pre_tax_factor_income:
 
 
 
+# get population data for Theil -------------------------------------------
+
+
+
+
+pop <- get_eurostat("naida_10_pe", time_format = "num")
+pop <- pop %>% filter(na_item == "POP_NC")
+
+
+
 # loop to calculate indicators for each year ------------------------------
 
 indicators <- array(NA, c(14, 40, 2))
-
+theil <- array(NA, c(40, 500, 2))
 
 for(year in 2004:2017){
   
@@ -31,12 +45,23 @@ for(year in 2004:2017){
   
   indicators[year-2003, 1,] <- year
   
+  
+  
+  
   # Creating Survey Objects -------------------------------------------------
   
   
   silc.p1.y <- silc.p1.ppp.store %>% filter(rb010 %in% year)
   silc.p2.y <- silc.p2.ppp.store %>% filter(pb010 %in% year)
 
+  
+  indicators[year-2003, 35,1] <- toString(levels(as.factor(silc.p1.y$rb020))) 
+  indicators[year-2003, 36,1] <- nlevels(as.factor(silc.p1.y$rb020))
+  
+  indicators[year-2003, 35,2] <- toString(levels(as.factor(silc.p2.y$pb020))) 
+  indicators[year-2003, 36,2] <- nlevels(as.factor(silc.p2.y$pb020))
+  
+  
   silc.p1.svy <- svydesign(ids =  ~ id_h,
                            strata = ~db040,
                            weights = ~rb050,
@@ -187,6 +212,128 @@ for(year in 2004:2017){
   #      svygei, epsilon = 1)
   
   
+  # Theil Index Decomposition
+
+  svygeidec(~equivalent_pre_tax_factor_income, ~rb020,silc.p1.svy, epsilon = 1)
+  table(silc.p1.y$rb020)
+
+
+  # calculate sum of total population for all countries
+  pop.y <- pop %>% filter(time %in% year)
+  pop_sum <- pop.y %>% filter(geo %in% c(levels(as.factor(silc.p1.y$rb020)))) %>% summarise(pop_sum = sum(values))
+
+
+  # first theil loop p1
+  
+  for(country in 1:nlevels(as.factor(silc.p1.y$rb020))){
+    # country population
+    pop_c <- pop.y$values[pop.y$geo==levels(as.factor(silc.p1.y$rb020))[country]]
+
+    # country
+    theil[country,1+(year-2004)*13,1] <- levels(as.factor(silc.p1.y$rb020))[country]
+    # country theil
+    theil[country,2+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,3+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    # country econ weight
+    theil[country,4+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    
+    # country ineq share
+    #theil[country,5+(year-2004)*13,1] <- (theil[country,4+(year-2004)*13,1]*theil[country,2+(year-2004)*13,1])/
+    
+    
+    # country theil
+    theil[country,6+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,7+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    # country econ weight
+    theil[country,8+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    
+    # country theil
+    theil[country,10+(year-2004)*13,1] <- svygei(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,11+(year-2004)*13,1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    # country econ weight
+    theil[country,12+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    
+    
+    }
+
+  
+  # first theil loop p2
+  
+  for(country in 1:nlevels(as.factor(silc.p2.y$pb020))){
+    # country population
+    pop_c <- pop.y$values[pop.y$geo==levels(as.factor(silc.p2.y$pb020))[country]]
+    
+    # country
+    theil[country,1+(year-2004)*13,2] <- levels(as.factor(silc.p2.y$pb020))[country]
+    # country theil
+    theil[country,2+(year-2004)*13,2] <- svygei(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,3+(year-2004)*13,2] <- svymean(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    # country econ weight
+    theil[country,4+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    
+    # country ineq share
+    #theil[country,5+(year-2004)*13,2] <- (theil[country,4+(year-2004)*13,2]*theil[country,2+(year-2004)*13,2])/
+    
+    
+    # country theil
+    theil[country,6+(year-2004)*13,2] <- svygei(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,7+(year-2004)*13,2] <- svymean(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    # country econ weight
+    theil[country,8+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    
+    # country theil
+    theil[country,10+(year-2004)*13,2] <- svygei(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    # country mean
+    theil[country,11+(year-2004)*13,2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    # country econ weight
+    theil[country,12+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    
+    
+  }
+  
+ 
+
+  # calculate Theil manually
+  indicators[year-2003, 32, 1] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,4+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 2, 1])))
+  indicators[year-2003, 33, 1] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 3, 1])))
+  indicators[year-2003, 34, 1] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 4, 1])))
+    
+  indicators[year-2003, 32, 2] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,4+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 2, 2])))
+  indicators[year-2003, 33, 2] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 3, 2])))
+  indicators[year-2003, 34, 2] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 4, 2])))
+    
+
+  # 2nd theil loop p1 - calculate ineq shares
+  
+  for(country in 1:nlevels(as.factor(silc.p1.y$rb020))){
+
+    # country ineq share
+    theil[country,5+(year-2004)*13,1] <- (as.numeric(theil[country,4+(year-2004)*13,1])*as.numeric(theil[country,2+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 32, 1])
+    
+    theil[country,9+(year-2004)*13,1] <- (as.numeric(theil[country,8+(year-2004)*13,1])*as.numeric(theil[country,6+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 33, 1])
+    
+    theil[country,13+(year-2004)*13,1] <- (as.numeric(theil[country,12+(year-2004)*13,1])*as.numeric(theil[country,10+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 34, 1])
+    
+  }
+
+  
+  # 2nd theil loop p2 - calculate ineq shares
+  
+  for(country in 1:nlevels(as.factor(silc.p2.y$pb020))){
+    
+    # country ineq share
+    theil[country,5+(year-2004)*13,2] <- (as.numeric(theil[country,4+(year-2004)*13,2])*as.numeric(theil[country,2+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 32, 2])
+    
+    theil[country,9+(year-2004)*13,2] <- (as.numeric(theil[country,8+(year-2004)*13,2])*as.numeric(theil[country,6+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 33, 2])
+    
+    theil[country,13+(year-2004)*13,2] <- (as.numeric(theil[country,12+(year-2004)*13,2])*as.numeric(theil[country,10+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 34, 2])
+    
+  }
 }
 
 
@@ -196,8 +343,17 @@ for(year in 2004:2017){
 indicators.p1 <- as.data.frame(indicators[,,1])
 indicators.p2 <- as.data.frame(indicators[,,2])
 
-indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31)
+theil.p1 <- as.data.frame(theil[,,1])
+theil.p2 <- as.data.frame(theil[,,2])
 
-indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31)
+
+indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31, countries = V35, ncountries = V36)
+
+indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_ptfi = V2, mean_ptni = V3, mean_ptdi = V4, mean_ptfii = V5, mean_ptdii = V6, median_ptfi = V7, median_ptni = V8, median_ptdi = V9, median_ptfii = V10, median_ptdii = V11, qsr8020_ptfi = V12, qsr8020_ptni = V13, qsr8020_ptdi = V14, qsr8020_ptfii = V15, qsr8020_ptdii = V16, top10_ptfi = V17, top10_ptni = V18, top10_ptdi = V19, top10_ptfii = V20, top10_ptdii = V21, gini_ptfi = V22, gini_ptni = V23, gini_ptdi = V24, gini_ptfii = V25, gini_ptdii = V26, theil_ptfi = V27, theil_ptni = V28, theil_ptdi = V29, theil_ptfii = V30, theil_ptdii = V31, countries = V35, ncountries = V36)
 
 
+
+
+
+
+save(indicators.p1, indicators.p2, theil.p1, theil.p2, file = "./data/eu28_indicators.RData")
