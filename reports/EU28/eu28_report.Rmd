@@ -193,7 +193,7 @@ data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), 
 
 
 
-data_di_p2 <- indicators.p2 %>% select(contains("ptdi"))
+data_di_p2 <- indicators.p2 %>% select(year, contains("ptdi"))
 data_di_p2 <- mutate_all(data_di_p2, function(x) as.double(as.character(x)))
 data_di_p2 <- data_di_p2 %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 
