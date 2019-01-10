@@ -190,6 +190,15 @@ Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilung
 
 # Ergebnisse
 
+## Indikatoren
+
+Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ungleichheit über die Jahre 2004 bis 2017. Dabei ist zu beachten, dass erst ab dem Jahr 2008 alle EU –Staaten enthalten sind. In den Jahren davor ist die Ungleichheit recht hoch, was vermutlich mit der Zusammensetzung der Länder zu erklären ist. Die Indikatoren wurden dabei Länderübergreifend berechnet. 
+
+Die 80/20 Rate zeigt auf, dass die das 80. Perzentil ungefähr das 6-fache vom 20. Perzentil verdient, dieser Wert bewegt sich in einem Rahmen von 5,311 und 9,33.  
+Bei den Top 10 Prozent ist zu sehen, dass 10% der Bevölkerung ungefähr 25% des Gesamteinkommens verdienen dieser Wert ist über die Jahre leicht gesunken. 
+Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat seit 2009 is er bei einem Wert von 0.33. 
+
+
 # Zusammenfassung
 
 
