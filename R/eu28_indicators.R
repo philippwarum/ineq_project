@@ -362,11 +362,14 @@ theil.p1 <- as.data.frame(theil[,,1])
 theil.p2 <- as.data.frame(theil[,,2])
 
 
-indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31, countries = V35, ncountries = V36)
+indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36)
 
-indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_ptfi = V2, mean_ptni = V3, mean_ptdi = V4, mean_ptfii = V5, mean_ptdii = V6, median_ptfi = V7, median_ptni = V8, median_ptdi = V9, median_ptfii = V10, median_ptdii = V11, qsr8020_ptfi = V12, qsr8020_ptni = V13, qsr8020_ptdi = V14, qsr8020_ptfii = V15, qsr8020_ptdii = V16, top10_ptfi = V17, top10_ptni = V18, top10_ptdi = V19, top10_ptfii = V20, top10_ptdii = V21, gini_ptfi = V22, gini_ptni = V23, gini_ptdi = V24, gini_ptfii = V25, gini_ptdii = V26, theil_ptfi = V27, theil_ptni = V28, theil_ptdi = V29, theil_ptfii = V30, theil_ptdii = V31, countries = V35, ncountries = V36)
+indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_ptfi = V2, mean_ptni = V3, mean_ptdi = V4, mean_ptfii = V5, mean_ptdii = V6, median_ptfi = V7, median_ptni = V8, median_ptdi = V9, median_ptfii = V10, median_ptdii = V11, qsr8020_ptfi = V12, qsr8020_ptni = V13, qsr8020_ptdi = V14, qsr8020_ptfii = V15, qsr8020_ptdii = V16, top10_ptfi = V17, top10_ptni = V18, top10_ptdi = V19, top10_ptfii = V20, top10_ptdii = V21, gini_ptfi = V22, gini_ptni = V23, gini_ptdi = V24, gini_ptfii = V25, gini_ptdii = V26, theil_ptfi = V27, theil_ptni = V28, theil_ptdi = V29, theil_ptfii = V30, theil_ptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36)
 
 
+
+
+# save data ---------------------------------------------------------------
 
 
 
