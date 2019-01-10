@@ -1,4 +1,7 @@
----
+
+
+
+ ---
 title: "Einkommensverteilung in Österreich"
 subtitle: "2063 - Ökonomie der Verteilung"
 author: "Nikolas Kuschnig & Casper Engelen"
@@ -112,26 +115,56 @@ Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachte
 # Methodologie
 
 ## Daten
+Wir haben über die Jahre variierende Observationen ----- , da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
+Wir unterscheiden in den Berechnungen zwischen zweierlei Arten der Grundgesamtheit. Bei P1 wird die Annahme getroffen, dass das gesamte verfügbare Einkommen auf alle im Haushalt lebenden Personen gleich verteilt wird. 
+Bei P2 werden persönlichen Einkommen der Person zugeschrieben die sie erwirtschaftet, Einkommensarten die an den Haushalt gezahlt werden gleich an alle Mitglieder über neunzehn gleich aufgeteilt. 
+
 
 ## Indikatoren
 
-###Median und Mittelwert 
+### Median und Mittelwert 
 Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren. Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
 Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
 
-###Gini und Theil Index
+### Gini und Theil Index
 Da unser Fokus auf der Einkommensungleichheit liegt ist es wichtig ein geeignetes Maß dafür zu nutzen. 
 Folgende Eigenschaften sind dabei zu beachten. Zum einen die Symmetrie was so viel bedeutet wie: Wenn Individuen ihr Einkommen untereinander tauschen hat das keinen Effekt auf die Ungleichheit.  Des Weiteren soll die Unabhängigkeit der Populationsgröße und des Mittelwerts gegeben sein, wenn sich die Population verändert oder alle Einkommen sich verdoppeln bleibt die Ungleichheit unverändert. 
 Sowie das sogenannte Pigou-Dalton-Prinzip, welches besagt, dass ein Transfer der Einkommen von reich zu arm Ungleichheit reduziert. 
 All eben genannten Bedingungen erfüllt der Gini Index, welcher die Ungleichheit auf einem Intervall von 0 bis 1 beschreibt. Bei einem Gini- Index von 0 verdient jedes Individuum in der Population das gleiche, bei einem Gini-Index von 1 verdient eine Person das gesamte Einkommen.
 Der Theil Index basiert auf einer anderen Berechnung, welche den Vorteil hat, dass zu den vier eben genannten Bedingungen zerlegbar ist und man beispielsweise Untergruppen bilden kann, das ist mit dem Gini nicht möglich. 
+Das Minimum des Theil Indices ist 0 wie auch beim Gini und ln(N) das Maximum. 
 Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}{\mu})ln(\frac{y_i}{\mu})$$ 
+
+
+|Variable  |Beschreibung | 
+| ---     | ---   | 
+| N    | Population   | 
+| $y_i$    | individuellles Einkommen   | 
+| $\mu$   | Mittelwert des Einkommens der Population   | 
+
+Wir machen uns die Eigenschaft der Zerlegbarkeit folgendermaßen zu Nutze
+
+$$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})$$
+
+|Variable  |Beschreibung | 
+| ---     | ---   | 
+| K   | Population Untergruppe  | 
+| $sy_k$    | Anteil des Einkommens der Untergruppe k   |
+| $T(1)_k$    | Theil Index der Untergruppe k   | 
+| $\mu$   | Mittelwert des Einkommens  |
+| $\mu_k$   | Mittelwert des Einkommens der Untergruppe k   |
+
+### Quantile 
+Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
+Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
+Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
 # Empirie
 
-Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlichtwurde vor allem an den untersuchten Ländern. Das Papier von @Beblo und Knaus (2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
-(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008. @Kranzinger (2018) hat den Theil- Index für die EU-28 mit 0,215 berechnet. 
-Oben genannte Autoren beschäftigen sich auch mit der Frage der Demografie. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
+Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlicht wurde vor allem an den untersuchten Ländern. Das Papier von Beblo und Knaus (2001)  wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
+(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. Kranzinger (2018) hat ebenso EU SILC verwendet den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
+
+Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilungen innerhalb der Länder aufgrund demographischer Gruppen. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
 
 # Ergebnisse
 
