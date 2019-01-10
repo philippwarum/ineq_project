@@ -92,34 +92,6 @@ plot(rnorm(50), rnorm(50))
 
 Potentiell weniger simple Tabellen:
 
-```{r echo=FALSE, }
-
-
-library(dplyr)
-
-
-
-load("../../data/eu28_indicators.RData")
-
-
-
-indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
-indicators.p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
-
-data_di <- indicators.p1 %>% select(contains("eptdi"))
-data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
-data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
-
-
-
-
-
-# Read CSV data, "../../" to look two levels upwards
-table <- read.csv("tables/_template-table.csv")
-knitr::kable(table, caption = "Mit Optionen")
-knitr::kable(data_di)
-```
-
 Horizontale Linien:
 
 ---
@@ -197,6 +169,36 @@ Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ung
 Die 80/20 Rate zeigt auf, dass die das 80. Perzentil ungefähr das 6-fache vom 20. Perzentil verdient, dieser Wert bewegt sich in einem Rahmen von 5,311 und 9,33.  
 Bei den Top 10 Prozent ist zu sehen, dass 10% der Bevölkerung ungefähr 25% des Gesamteinkommens verdienen dieser Wert ist über die Jahre leicht gesunken. 
 Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat seit 2009 is er bei einem Wert von 0.33. 
+
+
+```{r echo=FALSE, message=FALSE}
+
+
+library(dplyr)
+
+
+
+load("../../data/eu28_indicators.RData")
+
+
+
+indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
+indicators.p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
+
+data_di <- indicators.p1 %>% select(contains("eptdi"))
+data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
+data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
+
+
+
+
+
+# Read CSV data, "../../" to look two levels upwards
+table <- read.csv("tables/_template-table.csv")
+knitr::kable(table, caption = "Mit Optionen")
+knitr::kable(data_di)
+```
+
 
 
 # Zusammenfassung
