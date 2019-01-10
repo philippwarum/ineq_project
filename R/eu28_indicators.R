@@ -37,7 +37,7 @@ pop <- pop %>% filter(na_item == "POP_NC")
 # loop to calculate indicators for each year ------------------------------
 
 indicators <- array(NA, c(14, 40, 2))
-theil <- array(NA, c(40, 500, 2))
+theil <- array(NA, c(40, 500, 2), dimnames = list(c(as.character(1:40)),c(as.character(1:500)),c(as.character(1:2))))
 
 for(year in 2004:2017){
   
@@ -226,6 +226,21 @@ for(year in 2004:2017){
   # first theil loop p1
   
   for(country in 1:nlevels(as.factor(silc.p1.y$rb020))){
+    # colnames
+    colnames(theil)[1+(year-2004)*13] <- paste0("countries",year)
+    colnames(theil)[2+(year-2004)*13] <- paste0("fi.theil",year)
+    colnames(theil)[3+(year-2004)*13] <- paste0("fi.mean",year)
+    colnames(theil)[4+(year-2004)*13] <- paste0("fi.econ.weight",year)
+    colnames(theil)[5+(year-2004)*13] <- paste0("fi.ineq.share",year)
+    colnames(theil)[6+(year-2004)*13] <- paste0("ni.theil",year)
+    colnames(theil)[7+(year-2004)*13] <- paste0("ni.mean",year)
+    colnames(theil)[8+(year-2004)*13] <- paste0("ni.econ.weight",year)
+    colnames(theil)[9+(year-2004)*13] <- paste0("ni.ineq.share",year)
+    colnames(theil)[10+(year-2004)*13] <- paste0("di.theil",year)
+    colnames(theil)[11+(year-2004)*13] <- paste0("di.mean",year)
+    colnames(theil)[12+(year-2004)*13] <- paste0("di.econ.weight",year)
+    colnames(theil)[13+(year-2004)*13] <- paste0("di.ineq.share",year)
+    
     # country population
     pop_c <- pop.y$values[pop.y$geo==levels(as.factor(silc.p1.y$rb020))[country]]
 
@@ -300,12 +315,12 @@ for(year in 2004:2017){
 
   # calculate Theil manually
   indicators[year-2003, 32, 1] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,4+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 2, 1])))
-  indicators[year-2003, 33, 1] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 3, 1])))
-  indicators[year-2003, 34, 1] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 4, 1])))
+  indicators[year-2003, 33, 1] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,8+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 3, 1])))
+  indicators[year-2003, 34, 1] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,1])) + t(na.exclude(as.numeric(theil[,12+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 4, 1])))
     
   indicators[year-2003, 32, 2] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,4+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 2, 2])))
-  indicators[year-2003, 33, 2] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 3, 2])))
-  indicators[year-2003, 34, 2] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 4, 2])))
+  indicators[year-2003, 33, 2] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,8+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 3, 2])))
+  indicators[year-2003, 34, 2] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,12+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 4, 2])))
     
 
   # 2nd theil loop p1 - calculate ineq shares
