@@ -42,7 +42,7 @@ silc.r.store$rb020[silc.r.store$rb020=="GR"] <- "EL"
 
 
 # Can we even compute meaningful statistics for the EU28?
-table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2017])
+table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2014])
 
 
 # income aggregation ------------------------------------------------------

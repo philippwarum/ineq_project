@@ -17,10 +17,10 @@ rm(silc.d.store, silc.h.store, silc.p.store, silc.r.store)
 
 
 # Subsetting? --------------------------------------------------------------
-
-# # To get useful results we may want to subset to only positive income
-silc.p1.ppp.store <- silc.p1.ppp.store %>% filter_at(vars(equivalent_pre_tax_factor_income:equivalent_post_tax_disposable_income), all_vars(. > 0))
-silc.p2.ppp.store <- silc.p2.ppp.store %>% filter_at(vars(pre_tax_factor_income:post_tax_disposable_income), all_vars(. > 0))
+# 
+# # # To get useful results we may want to subset to only positive income (at least one positive income!)
+silc.p1.ppp.store <- silc.p1.ppp.store %>% filter_at(vars(equivalent_pre_tax_factor_income:equivalent_post_tax_disposable_income), any_vars(. > 0))
+silc.p2.ppp.store <- silc.p2.ppp.store %>% filter_at(vars(pre_tax_factor_income:post_tax_disposable_income), any_vars(. > 0))
 
 
 
@@ -81,15 +81,15 @@ for(year in 2004:2017){
   #
   
   
-  indicators[year-2003, 2, 1] <- svymean(~equivalent_pre_tax_factor_income, silc.p1.svy)
-  indicators[year-2003, 3, 1] <- svymean(~equivalent_pre_tax_national_income, silc.p1.svy)
-  indicators[year-2003, 4, 1] <- svymean(~equivalent_post_tax_disposable_income, silc.p1.svy)
-  indicators[year-2003, 5, 1] <- svymean(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy)
-  indicators[year-2003, 6, 1] <- svymean(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy)
+  indicators[year-2003, 2, 1] <- svymean(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0))
+  indicators[year-2003, 3, 1] <- svymean(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0))
+  indicators[year-2003, 4, 1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0))
+  indicators[year-2003, 5, 1] <- svymean(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0))
+  indicators[year-2003, 6, 1] <- svymean(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0))
   
-  indicators[year-2003, 2, 2] <- svymean(~pre_tax_factor_income, silc.p2.svy)
-  indicators[year-2003, 3, 2] <- svymean(~pre_tax_national_income, silc.p2.svy)
-  indicators[year-2003, 4, 2] <- svymean(~post_tax_disposable_income, silc.p2.svy)
+  indicators[year-2003, 2, 2] <- svymean(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0))
+  indicators[year-2003, 3, 2] <- svymean(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0))
+  indicators[year-2003, 4, 2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0))
 
   # For comparing countries
   # svyby(~total.inc, ~as.factor(db020), silc.pd.svy, svymean)
@@ -98,15 +98,15 @@ for(year in 2004:2017){
   # Median Income
   #
   
-  indicators[year-2003, 7, 1] <- svyquantile(~equivalent_pre_tax_factor_income, silc.p1.svy, quantiles = c(0.5))
-  indicators[year-2003, 8, 1] <- svyquantile(~equivalent_pre_tax_national_income, silc.p1.svy, quantiles = c(0.5))
-  indicators[year-2003, 9, 1] <- svyquantile(~equivalent_post_tax_disposable_income, silc.p1.svy, quantiles = c(0.5))
-  indicators[year-2003, 10, 1] <- svyquantile(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy, quantiles = c(0.5))
-  indicators[year-2003, 11, 1] <- svyquantile(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy, quantiles = c(0.5))
+  indicators[year-2003, 7, 1] <- svyquantile(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0), quantiles = c(0.5))
+  indicators[year-2003, 8, 1] <- svyquantile(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0), quantiles = c(0.5))
+  indicators[year-2003, 9, 1] <- svyquantile(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0), quantiles = c(0.5))
+  indicators[year-2003, 10, 1] <- svyquantile(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0), quantiles = c(0.5))
+  indicators[year-2003, 11, 1] <- svyquantile(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0), quantiles = c(0.5))
   
-  indicators[year-2003, 7, 2] <- svyquantile(~pre_tax_factor_income, silc.p2.svy, quantiles = c(0.5))
-  indicators[year-2003, 8, 2] <- svyquantile(~pre_tax_national_income, silc.p2.svy, quantiles = c(0.5))
-  indicators[year-2003, 9, 2] <- svyquantile(~post_tax_disposable_income, silc.p2.svy, quantiles = c(0.5))
+  indicators[year-2003, 7, 2] <- svyquantile(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0), quantiles = c(0.5))
+  indicators[year-2003, 8, 2] <- svyquantile(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0), quantiles = c(0.5))
+  indicators[year-2003, 9, 2] <- svyquantile(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0), quantiles = c(0.5))
   
   # For comparing countries
   # svyby(~total.inc, ~as.factor(db020), silc.pd.svy,
@@ -127,15 +127,15 @@ for(year in 2004:2017){
   # Quantile Share Ratio
   #
  
-  indicators[year-2003, 12, 1] <- svyqsr(~equivalent_pre_tax_factor_income, silc.p1.svy, 0.2, 0.8)
-  indicators[year-2003, 13, 1] <- svyqsr(~equivalent_pre_tax_national_income, silc.p1.svy, 0.2, 0.8)
-  indicators[year-2003, 14, 1] <- svyqsr(~equivalent_post_tax_disposable_income, silc.p1.svy, 0.2, 0.8)
-  indicators[year-2003, 15, 1] <- svyqsr(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy, 0.2, 0.8)
-  indicators[year-2003, 16, 1] <- svyqsr(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy, 0.2, 0.8)
+  indicators[year-2003, 12, 1] <- svyqsr(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0), 0.2, 0.8)
+  indicators[year-2003, 13, 1] <- svyqsr(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0), 0.2, 0.8)
+  indicators[year-2003, 14, 1] <- svyqsr(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0), 0.2, 0.8)
+  indicators[year-2003, 15, 1] <- svyqsr(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0), 0.2, 0.8)
+  indicators[year-2003, 16, 1] <- svyqsr(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0), 0.2, 0.8)
   
-  indicators[year-2003, 12, 2] <- svyqsr(~pre_tax_factor_income, silc.p2.svy, 0.2, 0.8)
-  indicators[year-2003, 13, 2] <- svyqsr(~pre_tax_national_income, silc.p2.svy, 0.2, 0.8)
-  indicators[year-2003, 14, 2] <- svyqsr(~post_tax_disposable_income, silc.p2.svy, 0.2, 0.8)
+  indicators[year-2003, 12, 2] <- svyqsr(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0), 0.2, 0.8)
+  indicators[year-2003, 13, 2] <- svyqsr(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0), 0.2, 0.8)
+  indicators[year-2003, 14, 2] <- svyqsr(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0), 0.2, 0.8)
   
   
   # For comparing countries
@@ -145,31 +145,31 @@ for(year in 2004:2017){
   # Top 10% Income Share
   #
   indicators[year-2003, 17, 1] <-  svytotal(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income >= 
-                                                                 as.numeric(svyquantile(~equivalent_pre_tax_factor_income, silc.p1.svy, quantile = 0.9)))) / 
-    svytotal(~equivalent_pre_tax_factor_income, silc.p1.svy)
+                                                                 as.numeric(svyquantile(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0), quantile = 0.9)))) / 
+    svytotal(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0))
   indicators[year-2003, 18, 1] <-  svytotal(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income >= 
-                                                                 as.numeric(svyquantile(~equivalent_pre_tax_national_income, silc.p1.svy, quantile = 0.9)))) / 
-    svytotal(~equivalent_pre_tax_national_income, silc.p1.svy)
+                                                                 as.numeric(svyquantile(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0), quantile = 0.9)))) / 
+    svytotal(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0))
   indicators[year-2003, 19, 1] <-  svytotal(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income >= 
-                                                                 as.numeric(svyquantile(~equivalent_post_tax_disposable_income, silc.p1.svy, quantile = 0.9)))) / 
-    svytotal(~equivalent_post_tax_disposable_income, silc.p1.svy)
+                                                                 as.numeric(svyquantile(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0), quantile = 0.9)))) / 
+    svytotal(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0))
   indicators[year-2003, 20, 1] <-  svytotal(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed >= 
-                                                                 as.numeric(svyquantile(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy, quantile = 0.9)))) / 
-    svytotal(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy)
+                                                                 as.numeric(svyquantile(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0), quantile = 0.9)))) / 
+    svytotal(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0))
   indicators[year-2003, 21, 1] <-  svytotal(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed >= 
-                                                                 as.numeric(svyquantile(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy, quantile = 0.9)))) / 
-    svytotal(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy)
+                                                                 as.numeric(svyquantile(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0), quantile = 0.9)))) / 
+    svytotal(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0))
   
   
   indicators[year-2003, 17, 2] <- svytotal(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income >= 
-                                                                                       as.numeric(svyquantile(~pre_tax_factor_income, silc.p2.svy, quantile = 0.9)))) / 
-    svytotal(~pre_tax_factor_income, silc.p2.svy)
+                                                                                       as.numeric(svyquantile(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0), quantile = 0.9)))) / 
+    svytotal(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0))
   indicators[year-2003, 18, 2] <-  svytotal(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income >= 
-                                                                                          as.numeric(svyquantile(~pre_tax_national_income, silc.p2.svy, quantile = 0.9)))) / 
-    svytotal(~pre_tax_national_income, silc.p2.svy)
+                                                                                          as.numeric(svyquantile(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0), quantile = 0.9)))) / 
+    svytotal(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0))
   indicators[year-2003, 19, 2] <-  svytotal(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income >= 
-                                                                                             as.numeric(svyquantile(~post_tax_disposable_income, silc.p2.svy, quantile = 0.9)))) / 
-    svytotal(~post_tax_disposable_income, silc.p2.svy)
+                                                                                             as.numeric(svyquantile(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0), quantile = 0.9)))) / 
+    svytotal(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0))
   
   
 
@@ -177,15 +177,15 @@ for(year in 2004:2017){
   # Gini Coefficient
   #
 
-  indicators[year-2003, 22, 1] <- svygini(~equivalent_pre_tax_factor_income, silc.p1.svy)
-  indicators[year-2003, 23, 1] <- svygini(~equivalent_pre_tax_national_income, silc.p1.svy)
-  indicators[year-2003, 24, 1] <- svygini(~equivalent_post_tax_disposable_income, silc.p1.svy)
-  indicators[year-2003, 25, 1] <- svygini(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy)
-  indicators[year-2003, 26, 1] <- svygini(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy)
+  indicators[year-2003, 22, 1] <- svygini(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0))
+  indicators[year-2003, 23, 1] <- svygini(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0))
+  indicators[year-2003, 24, 1] <- svygini(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0))
+  indicators[year-2003, 25, 1] <- svygini(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0))
+  indicators[year-2003, 26, 1] <- svygini(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0))
   
-  indicators[year-2003, 22, 2] <- svygini(~pre_tax_factor_income, silc.p2.svy)
-  indicators[year-2003, 23, 2] <- svygini(~pre_tax_national_income, silc.p2.svy)
-  indicators[year-2003, 24, 2] <- svygini(~post_tax_disposable_income, silc.p2.svy)
+  indicators[year-2003, 22, 2] <- svygini(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0))
+  indicators[year-2003, 23, 2] <- svygini(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0))
+  indicators[year-2003, 24, 2] <- svygini(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0))
   
   
   # For comparing countries
@@ -195,15 +195,15 @@ for(year in 2004:2017){
   # Theil Index
   #
   
-  indicators[year-2003, 27, 1] <- svygei(~equivalent_pre_tax_factor_income, silc.p1.svy, epsilon = 1)
-  indicators[year-2003, 28, 1] <- svygei(~equivalent_pre_tax_national_income, silc.p1.svy, epsilon = 1)
-  indicators[year-2003, 29, 1] <- svygei(~equivalent_post_tax_disposable_income, silc.p1.svy, epsilon = 1)
-  indicators[year-2003, 30, 1] <- svygei(~equivalent_pre_tax_factor_income_imputed, silc.p1.svy, epsilon = 1)
-  indicators[year-2003, 31, 1] <- svygei(~equivalent_post_tax_disposable_income_imputed, silc.p1.svy, epsilon = 1)
+  indicators[year-2003, 27, 1] <- svygei(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, equivalent_pre_tax_factor_income > 0), epsilon = 1)
+  indicators[year-2003, 28, 1] <- svygei(~equivalent_pre_tax_national_income, subset(silc.p1.svy, equivalent_pre_tax_national_income > 0), epsilon = 1)
+  indicators[year-2003, 29, 1] <- svygei(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, equivalent_post_tax_disposable_income > 0), epsilon = 1)
+  indicators[year-2003, 30, 1] <- svygei(~equivalent_pre_tax_factor_income_imputed, subset(silc.p1.svy, equivalent_pre_tax_factor_income_imputed > 0), epsilon = 1)
+  indicators[year-2003, 31, 1] <- svygei(~equivalent_post_tax_disposable_income_imputed, subset(silc.p1.svy, equivalent_post_tax_disposable_income_imputed > 0), epsilon = 1)
   
-  indicators[year-2003, 27, 2] <- svygei(~pre_tax_factor_income, silc.p2.svy, epsilon = 1)
-  indicators[year-2003, 28, 2] <- svygei(~pre_tax_national_income, silc.p2.svy, epsilon = 1)
-  indicators[year-2003, 29, 2] <- svygei(~post_tax_disposable_income, silc.p2.svy, epsilon = 1)
+  indicators[year-2003, 27, 2] <- svygei(~pre_tax_factor_income, subset(silc.p2.svy, pre_tax_factor_income > 0), epsilon = 1)
+  indicators[year-2003, 28, 2] <- svygei(~pre_tax_national_income, subset(silc.p2.svy, pre_tax_national_income > 0), epsilon = 1)
+  indicators[year-2003, 29, 2] <- svygei(~post_tax_disposable_income, subset(silc.p2.svy, post_tax_disposable_income > 0), epsilon = 1)
   
   # For comparing countries
   # svyby(~total.inc, ~as.factor(db020), silc.pd.svy,
@@ -213,9 +213,9 @@ for(year in 2004:2017){
   
   
   # Theil Index Decomposition
-
-  svygeidec(~equivalent_pre_tax_factor_income, ~rb020,silc.p1.svy, epsilon = 1)
-  table(silc.p1.y$rb020)
+# 
+#   svygeidec(~equivalent_pre_tax_factor_income, ~rb020,silc.p1.svy, epsilon = 1)
+#   table(silc.p1.y$rb020)
 
 
   # calculate sum of total population for all countries
@@ -247,9 +247,9 @@ for(year in 2004:2017){
     # country
     theil[country,1+(year-2004)*13,1] <- levels(as.factor(silc.p1.y$rb020))[country]
     # country theil
-    theil[country,2+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    theil[country,2+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country] & equivalent_pre_tax_factor_income > 0), epsilon = 1)
     # country mean
-    theil[country,3+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    theil[country,3+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_factor_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]& equivalent_pre_tax_factor_income > 0))
     # country econ weight
     theil[country,4+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
     
@@ -258,16 +258,16 @@ for(year in 2004:2017){
     
     
     # country theil
-    theil[country,6+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    theil[country,6+(year-2004)*13,1] <- svygei(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]& equivalent_pre_tax_national_income > 0), epsilon = 1)
     # country mean
-    theil[country,7+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    theil[country,7+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]& equivalent_pre_tax_national_income > 0))
     # country econ weight
     theil[country,8+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
     
     # country theil
-    theil[country,10+(year-2004)*13,1] <- svygei(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]), epsilon = 1)
+    theil[country,10+(year-2004)*13,1] <- svygei(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]&equivalent_post_tax_disposable_income>0), epsilon = 1)
     # country mean
-    theil[country,11+(year-2004)*13,1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]))
+    theil[country,11+(year-2004)*13,1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]&equivalent_post_tax_disposable_income>0))
     # country econ weight
     theil[country,12+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
     
@@ -284,9 +284,9 @@ for(year in 2004:2017){
     # country
     theil[country,1+(year-2004)*13,2] <- levels(as.factor(silc.p2.y$pb020))[country]
     # country theil
-    theil[country,2+(year-2004)*13,2] <- svygei(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    theil[country,2+(year-2004)*13,2] <- svygei(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&pre_tax_factor_income > 0), epsilon = 1)
     # country mean
-    theil[country,3+(year-2004)*13,2] <- svymean(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    theil[country,3+(year-2004)*13,2] <- svymean(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&pre_tax_factor_income > 0))
     # country econ weight
     theil[country,4+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
     
@@ -295,16 +295,16 @@ for(year in 2004:2017){
     
     
     # country theil
-    theil[country,6+(year-2004)*13,2] <- svygei(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    theil[country,6+(year-2004)*13,2] <- svygei(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]& pre_tax_national_income > 0), epsilon = 1)
     # country mean
-    theil[country,7+(year-2004)*13,2] <- svymean(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    theil[country,7+(year-2004)*13,2] <- svymean(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]& pre_tax_national_income > 0))
     # country econ weight
     theil[country,8+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
     
     # country theil
-    theil[country,10+(year-2004)*13,2] <- svygei(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]), epsilon = 1)
+    theil[country,10+(year-2004)*13,2] <- svygei(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&post_tax_disposable_income>0), epsilon = 1)
     # country mean
-    theil[country,11+(year-2004)*13,2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]))
+    theil[country,11+(year-2004)*13,2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&post_tax_disposable_income>0))
     # country econ weight
     theil[country,12+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
     
