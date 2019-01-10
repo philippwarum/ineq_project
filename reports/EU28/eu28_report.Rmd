@@ -163,6 +163,42 @@ Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann
 Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilungen innerhalb der Länder aufgrund demographischer Gruppen. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
 
 # Ergebnisse
+# Theil Index 
+
+```{r echo=FALSE, message=FALSE}
+
+
+library(dplyr)
+
+
+
+load("../../data/eu28_indicators.RData")
+
+theil.p1 <- slice(theil.p1,1:28)
+theil.p2 <- slice(theil.p2,1:28)
+
+theil.p1 <- theil.p1 %>% select(contains("2010"), contains("2016"))
+theil.p2 <- theil.p2 %>% select(contains("2010"), contains("2016"))
+theil.p1 <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
+theil.p2 <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
+
+theil_2010.p1 <- theil.p1 %>% select( contains("2010"))
+theil_2016.p1 <- theil.p1 %>% select( contains("2016"))
+
+theil_2010.p2 <- theil.p2 %>% select( contains("2010"))
+theil_2016.p2 <- theil.p2 %>% select( contains("2016"))
+theil.p1 <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
+theil.p2 <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
+
+
+
+
+knitr::kable(theil_2010.p1)
+knitr::kable(theil_2016.p1)
+
+knitr::kable(theil_2010.p2)
+knitr::kable(theil_2016.p2)
+```
 
 ## Indikatoren
 
@@ -187,7 +223,7 @@ load("../../data/eu28_indicators.RData")
 indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
 indicators.p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
 
-data_di <- indicators.p1 %>% select(contains("eptdi"))
+data_di <- indicators.p1 %>% select(year, contains("eptdi"))
 data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
 data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 
