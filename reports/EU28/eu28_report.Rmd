@@ -154,6 +154,8 @@ $$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})
 | $\mu$   | Mittelwert des Einkommens  |
 | $\mu_k$   | Mittelwert des Einkommens der Untergruppe k   |
 
+
+
 ### Quantile 
 Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
 Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
