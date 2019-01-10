@@ -193,12 +193,12 @@ data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), 
 
 
 
+data_di_p2 <- indicators.p2 %>% select(contains("ptdi"))
+data_di_p2 <- mutate_all(data_di_p2, function(x) as.double(as.character(x)))
+data_di_p2 <- data_di_p2 %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 
-
-# Read CSV data, "../../" to look two levels upwards
-table <- read.csv("tables/_template-table.csv")
-knitr::kable(table, caption = "Mit Optionen")
 knitr::kable(data_di)
+knitr::kable(data_di_p2)
 ```
 
 
