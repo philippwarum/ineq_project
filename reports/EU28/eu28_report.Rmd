@@ -194,8 +194,18 @@ theil_2016.p2 <- theil.p2 %>% select( contains("2016"))
 theil.p1 <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
 theil.p2 <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
 
+theil_2010.p1 <- theil_2010.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
+theil_2010.p1 <- theil_2010.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
+
+theil_2010.p2 <- theil_2010.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
+theil_2010.p2 <- theil_2010.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
+
+theil_2016.p1 <- theil_2016.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
+theil_2016.p1 <- theil_2016.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
 
 
+theil_2016.p2 <- theil_2016.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
+theil_2016.p2 <- theil_2016.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
 
 knitr::kable(theil_2010.p1)
 knitr::kable(theil_2016.p1)
