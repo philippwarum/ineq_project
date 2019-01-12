@@ -12,6 +12,10 @@ library(eurostat)
 load("./data/silc_eu28.RData")
 
 
+table(silc.h.store$hb020[which(silc.h.store$hb010==2017)])
+
+
+
 rm(silc.d.store, silc.h.store, silc.p.store, silc.r.store)
 
 
