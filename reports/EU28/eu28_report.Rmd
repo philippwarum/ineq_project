@@ -149,12 +149,12 @@ Der T(1) berechnet sich wie folgt $$T(1) = \frac{1}{N} \sum_{i=1}^{N}(\frac{y_i}
 
 Wir machen uns die Eigenschaft der Zerlegbarkeit folgendermaßen zu Nutze
 
-$$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})$$
+$$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu}) $$wobei$$ s_k = \frac{\sum_{j=1}^{N_k}y_j}{\sum_{i=1}^{N}y_i} = \frac{N_k * mu_k}{N * mu}$$
 
 |Variable  |Beschreibung | 
 | ---     | ---   | 
 | K   | Population Untergruppe  | 
-| $sy_k$    | Anteil des Einkommens der Untergruppe k   |
+| $s_k$    | Anteil des Einkommens der Untergruppe k   |
 | $T(1)_k$    | Theil Index der Untergruppe k   | 
 | $\mu$   | Mittelwert des Einkommens  |
 | $\mu_k$   | Mittelwert des Einkommens der Untergruppe k   |
