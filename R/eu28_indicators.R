@@ -12,9 +12,6 @@ library(eurostat)
 load("./data/silc_eu28.RData")
 
 
-table(silc.h.store$hb020[which(silc.h.store$hb010==2017)])
-
-
 
 rm(silc.d.store, silc.h.store, silc.p.store, silc.r.store)
 
@@ -40,7 +37,7 @@ pop <- pop %>% filter(na_item == "POP_NC")
 
 # loop to calculate indicators for each year ------------------------------
 
-indicators <- array(NA, c(14, 40, 2))
+indicators <- array(NA, c(14, 50, 2))
 theil <- array(NA, c(40, 500, 2), dimnames = list(c(as.character(1:40)),c(as.character(1:500)),c(as.character(1:2))))
 
 for(year in 2004:2017){
@@ -325,7 +322,27 @@ for(year in 2004:2017){
   indicators[year-2003, 32, 2] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,4+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 2, 2])))
   indicators[year-2003, 33, 2] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,8+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 3, 2])))
   indicators[year-2003, 34, 2] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,2])) + t(na.exclude(as.numeric(theil[,12+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 4, 2])))
+  
+  # within component
+  indicators[year-2003, 37, 1] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,1])) 
+  indicators[year-2003, 38, 1] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,1])) 
+  indicators[year-2003, 39, 1] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,1])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,1])) 
+  
+  
+  indicators[year-2003, 37, 2] <-  t(na.exclude(as.numeric(theil[,2+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,4+(year-2004)*13,2])) 
+  indicators[year-2003, 38, 2] <- t(na.exclude(as.numeric(theil[,6+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,8+(year-2004)*13,2])) 
+  indicators[year-2003, 39, 2] <- t(na.exclude(as.numeric(theil[,10+(year-2004)*13,2])))%*%na.exclude(as.numeric(theil[,12+(year-2004)*13,2])) 
+  
+  # between component
     
+  indicators[year-2003, 40, 1] <- t(na.exclude(as.numeric(theil[,4+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 2, 1])))
+  indicators[year-2003, 41, 1] <- t(na.exclude(as.numeric(theil[,8+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 3, 1])))
+  indicators[year-2003, 42, 1] <- t(na.exclude(as.numeric(theil[,12+(year-2004)*13,1])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 4, 1])))
+  
+  indicators[year-2003, 40, 2] <- t(na.exclude(as.numeric(theil[,4+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,3+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 2, 2])))
+  indicators[year-2003, 41, 2] <- t(na.exclude(as.numeric(theil[,8+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,7+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 3, 2])))
+  indicators[year-2003, 42, 2] <- t(na.exclude(as.numeric(theil[,12+(year-2004)*13,2])))%*%(log(na.exclude(as.numeric(theil[,11+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 4, 2])))
+  
 
   # 2nd theil loop p1 - calculate ineq shares
   
@@ -353,6 +370,10 @@ for(year in 2004:2017){
     theil[country,13+(year-2004)*13,2] <- (as.numeric(theil[country,12+(year-2004)*13,2])*as.numeric(theil[country,10+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 34, 2])
     
   }
+  
+  # 
+  
+  
 }
 
 
@@ -366,10 +387,29 @@ theil.p1 <- as.data.frame(theil[,,1])
 theil.p2 <- as.data.frame(theil[,,2])
 
 
-indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36)
+indicators.p1 <- indicators.p1 %>% rename(year = V1, mean_eptfi = V2, mean_eptni = V3, mean_eptdi = V4, mean_eptfii = V5, mean_eptdii = V6, median_eptfi = V7, median_eptni = V8, median_eptdi = V9, median_eptfii = V10, median_eptdii = V11, qsr8020_eptfi = V12, qsr8020_eptni = V13, qsr8020_eptdi = V14, qsr8020_eptfii = V15, qsr8020_eptdii = V16, top10_eptfi = V17, top10_eptni = V18, top10_eptdi = V19, top10_eptfii = V20, top10_eptdii = V21, gini_eptfi = V22, gini_eptni = V23, gini_eptdi = V24, gini_eptfii = V25, gini_eptdii = V26, theil_eptfi = V27, theil_eptni = V28, theil_eptdi = V29, theil_eptfii = V30, theil_eptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36, theil_fi_within = V37, theil_ni_within = V38, theil_di_within = V39, theil_fi_between = V40, theil_ni_between = V41, theil_di_between = V42)
 
-indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_ptfi = V2, mean_ptni = V3, mean_ptdi = V4, mean_ptfii = V5, mean_ptdii = V6, median_ptfi = V7, median_ptni = V8, median_ptdi = V9, median_ptfii = V10, median_ptdii = V11, qsr8020_ptfi = V12, qsr8020_ptni = V13, qsr8020_ptdi = V14, qsr8020_ptfii = V15, qsr8020_ptdii = V16, top10_ptfi = V17, top10_ptni = V18, top10_ptdi = V19, top10_ptfii = V20, top10_ptdii = V21, gini_ptfi = V22, gini_ptni = V23, gini_ptdi = V24, gini_ptfii = V25, gini_ptdii = V26, theil_ptfi = V27, theil_ptni = V28, theil_ptdi = V29, theil_ptfii = V30, theil_ptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36)
+indicators.p2 <- indicators.p2 %>% rename(year = V1, mean_ptfi = V2, mean_ptni = V3, mean_ptdi = V4, mean_ptfii = V5, mean_ptdii = V6, median_ptfi = V7, median_ptni = V8, median_ptdi = V9, median_ptfii = V10, median_ptdii = V11, qsr8020_ptfi = V12, qsr8020_ptni = V13, qsr8020_ptdi = V14, qsr8020_ptfii = V15, qsr8020_ptdii = V16, top10_ptfi = V17, top10_ptni = V18, top10_ptdi = V19, top10_ptfii = V20, top10_ptdii = V21, gini_ptfi = V22, gini_ptni = V23, gini_ptdi = V24, gini_ptfii = V25, gini_ptdii = V26, theil_ptfi = V27, theil_ptni = V28, theil_ptdi = V29, theil_ptfii = V30, theil_ptdii = V31, theil_fi_manual = V32, theil_ni_manual = V33, theil_di_manual = V34, countries = V35, ncountries = V36, theil_fi_within = V37, theil_ni_within = V38, theil_di_within = V39, theil_fi_between = V40, theil_ni_between = V41, theil_di_between = V42)
 
+
+
+# calculate theil between ineq share
+
+indicators.p1 <- indicators.p1 %>% mutate(theil_between_share_fi = as.numeric(as.character(theil_fi_between)) / as.numeric(as.character(theil_fi_manual)), theil_between_share_ni = as.numeric(as.character(theil_ni_between)) / as.numeric(as.character(theil_ni_manual)), theil_between_share_di = as.numeric(as.character(theil_di_between)) / as.numeric(as.character(theil_di_manual)))
+
+indicators.p2 <- indicators.p2 %>% mutate(theil_between_share_fi = as.numeric(as.character(theil_fi_between)) / as.numeric(as.character(theil_fi_manual)), theil_between_share_ni = as.numeric(as.character(theil_ni_between)) / as.numeric(as.character(theil_ni_manual)), theil_between_share_di = as.numeric(as.character(theil_di_between)) / as.numeric(as.character(theil_di_manual)))
+
+indicators.p1 <- indicators.p1 %>% select(-(V43:V50))
+indicators.p2 <- indicators.p2 %>% select(-(V43:V50))
+
+# check proportions -------------------------------------------------------
+# 
+# 
+# table(silc.h.store$hb020[which(silc.h.store$hb010==2017)])
+# cw <- silc.p1.y %>% filter(equivalent_post_tax_disposable_income>0) %>%  group_by(rb020) %>% summarise(sum_cweight = sum(rb050))
+# cw <- cw %>% mutate(propcw = sum_cweight/sum(sum_cweight))
+# 
+# cwj <- left_join(cw, pop.nobs, by = c("rb020"="geo"))
 
 
 
