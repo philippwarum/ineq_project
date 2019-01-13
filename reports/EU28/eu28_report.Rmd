@@ -122,8 +122,10 @@ Die Berechnungen beziehen sich auf die Einkommen nach Abzug der Steuern und Erha
 
 ## Indikatoren
 
+Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren.
+
 ### Median und Mittelwert 
-Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren. Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
+Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
 Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
 
 ### Gini und Theil Index
@@ -154,7 +156,7 @@ $$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})
 | $\mu$   | Mittelwert des Einkommens  |
 | $\mu_k$   | Mittelwert des Einkommens der Untergruppe k   |
 
-Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann man die ungleichheit innerhalb einer Gruppe untersuchen sowie die Ungleichheilt zwischen den Gruppen. Wir haben unsere Gsamtheit des EU28-Landes in die 28 Mitgliedsländer unterteilt. Damit ist es möglich die Anteile der einzelnen Länder aufzuzeigen, sowie das ökonomische Gewicht innerhalb des EU28-Landes.
+Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann man die ungleichheit innerhalb einer Gruppe untersuchen sowie die Ungleichheilt zwischen den Gruppen. Wir haben unsere Gesamtheit des EU28-Landes in die 28 Mitgliedsländer unterteilt. Damit ist es möglich die Anteile der einzelnen Länder aufzuzeigen, sowie das ökonomische Gewicht innerhalb des EU28-Landes.
 
 ### Quantile 
 Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
