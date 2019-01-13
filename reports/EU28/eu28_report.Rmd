@@ -15,7 +15,20 @@ output:
       in_header: header.tex
 bibliography: references.bib
 ---
-
+ ---
+title: "Einkommensverteilung im EU-28-Land"
+subtitle: "2063 - Ökonomie der Verteilung"
+author: "Nikolas Kuschnig & Casper Engelen"
+abstract: "Dieses Dokument stellt einige Funktionen von Rmarkdown vor und bietet eine simple Grundstruktur für Länder-Reports."
+keywords: "Ungleichheit, Theil-Index, EU"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: 
+  pdf_document:
+    toc: true
+    includes: 
+      in_header: header.tex
+bibliography: references.bib
+---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -29,6 +42,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(latticeExtra)
 library(RColorBrewer)
+library(ggplot2)
 ```
 
 ```{r, eval=FALSE}
@@ -104,12 +118,8 @@ Horizontale Linien:
 
 # Einführung
 
-In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis der EU-SILC Daten über einen Zeitraum von 2004 bis 2017. Während 2004 nur 10 Länder verfügbar
-
-
-Anfangs sind die EU25 inkludiert ab 2007 treten Bulgarien und Rumänien bei, im Jahr 2017 tritt Kroatien bei, womit die EU28 vervollständigt sind.
-Die EU-SILC Daten werden jährlich auf Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. 
-Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Daten auch wechselkursbereinigt.
+In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis der EU-SILC Daten über einen Zeitraum von 2004 bis 2017. Während 2004 nur 10 Länder verfügbar sind treten 2007 Bulgarien und Rumänien bei und 2013 vervollständigen sich mit der Aufnahme Kroatiens auf die EU28. 
+ Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Daten auch wechselkursbereinigt.
 
 
 # Methodologie
@@ -174,6 +184,7 @@ Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilung
 # Ergebnisse
 # Theil Index 
 In Tabelle -- vergleichen die Ergebnisse des Theil Indexes der EU-28 untereinander und betrachten dabei vor allem die Unterschiede zwischen 2010 und 2016. Der von uns Für das EU-28-Land berentete Theil beläuft sich im Jahr 2010 auf 0,201 und fällt marginal auf 0,198 im Jahr 2016. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich von 0,14 auf 0,13. 
+Es liegt kein konkretes Muster vor, bei einigen Ländern steigt der Theil Index, beispielsweise in Dänemark, in anderen Ländern wie der Slowakei und Belgien fällt er.
 Des Weiteren analysieren wir die Anteile der Ungleichverteilung der Länder, in unserem EU-28-Land, sowie das wirtschaftliche Gewicht der Länder. Welches sich zusätzlich am BIP orientiert, danach ist Deutschland mit 19,25 % bereits 2010 stark repräsentiert, dieses ökonomische Gewicht baut es bis 2016 auf 21,00% aus, der Anteil an der Ungleichheit liegt 2016 allerdings nur bei 16,77%.
 Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von über 50 % besitzen. 
 
@@ -313,4 +324,13 @@ theil_2016.p2 <- theil_2016.p2 %>% mutate_at(vars(contains("theil"):contains("we
 
 knitr::kable(theil_2010.p2)
 knitr::kable(theil_2016.p2)
+```
+
+```{r echo=FALSE, message=FALSE}
+theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
+ggplot(theil.vgl) +
+  geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
+  geom_point( aes(x=countries2010, y=di.theil2010), color=rgb(0.2,0.7,0.1,0.5), size=3 ) +
+  geom_point( aes(x=countries2010, y=di.theil2016), color=rgb(0.7,0.2,0.1,0.5), size=3 ) +
+  coord_flip() 
 ```
