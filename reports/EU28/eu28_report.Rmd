@@ -175,7 +175,7 @@ Des Weiteren analysieren wir die Anteile der Ungleichverteilung der Länder, in 
 Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von über 50 % besitzen. 
 
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, warning=FALSE}
 
 
 library(dplyr)
