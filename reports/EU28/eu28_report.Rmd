@@ -15,20 +15,7 @@ output:
       in_header: header.tex
 bibliography: references.bib
 ---
- ---
-title: "Einkommensverteilung im EU-28-Land"
-subtitle: "2063 - Ökonomie der Verteilung"
-author: "Nikolas Kuschnig & Casper Engelen"
-abstract: "Dieses Dokument stellt einige Funktionen von Rmarkdown vor und bietet eine simple Grundstruktur für Länder-Reports."
-keywords: "Ungleichheit, Theil-Index, EU"
-date: '`r format(Sys.time(), "%d %B, %Y")`'
-output: 
-  pdf_document:
-    toc: true
-    includes: 
-      in_header: header.tex
-bibliography: references.bib
----
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -119,14 +106,19 @@ Horizontale Linien:
 # Einführung
 
 In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis der EU-SILC Daten über einen Zeitraum von 2004 bis 2017. Während 2004 nur 10 Länder verfügbar sind treten 2007 Bulgarien und Rumänien bei und 2013 vervollständigen sich mit der Aufnahme Kroatiens auf die EU28. 
- Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Daten auch wechselkursbereinigt.
+Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Einkommen auch wechselkursbereinigt.
 
 
 # Methodologie
 
 ## Daten
-Wir haben über die Jahre variierende Observationen, da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
+
+Wir haben über die Jahre variierende Observationen, da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Die EU-SILC Daten werden jährlich auf Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
 Wir unterscheiden in den Berechnungen zwischen zweierlei Arten der Grundgesamtheit. Bei P1 wird die Annahme getroffen, dass das gesamte verfügbare Einkommen auf alle im Haushalt lebenden Personen gleich verteilt wird. 
+Bei P2 werden persönlichen Einkommen der Person zugeschrieben, die sie erwirtschaftet, Einkommensarten, die an den Haushalt gezahlt werden gleich an alle Mitglieder über neunzehn gleich aufgeteilt. 
+Der Fokus der Berechnungen bezieht sich auf jene Einkommen nach Abzug der Steuern und Erhalt von Transferzahlungen. 
+Wir haben über die Jahre variierende Observationen, da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
+Wir unterscheiden dabei zwischen zweierlei Arten der Grundgesamtheit. Bei P1 wird die Annahme getroffen, dass das gesamte verfügbare Einkommen auf alle im Haushalt lebenden Personen gleich verteilt wird. 
 Bei P2 werden persönlichen Einkommen der Person zugeschrieben die sie erwirtschaftet, Einkommensarten die an den Haushalt gezahlt werden gleich an alle Mitglieder über neunzehn gleich aufgeteilt. 
 Die Berechnungen beziehen sich auf die Einkommen nach Abzug der Steuern und Erhalt von Transferzahlungen. 
 
