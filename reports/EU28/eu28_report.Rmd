@@ -114,17 +114,40 @@ In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung 
 Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Einkommen auch wechselkursbereinigt.
 
 
+# Empirie
+
+Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlicht wurde vor allem an den untersuchten Ländern. Das Papier von Beblo und Knaus (2001)  wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
+(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. Kranzinger (2018) hat ebenso EU SILC verwendet den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
+
+Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilungen innerhalb der Länder aufgrund demographischer Gruppen. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
+
+
 # Methodologie
+
+untersuchen - einkommensverteilung eu28 - silc - datenbearbeitung - verschiedene maße zur beschreibung der verteilung
 
 ## Daten
 
-Wir haben über die Jahre variierende Observationen, da in zunehmend mehr Ländern EU SILC Daten erhoben werden. Die EU-SILC Daten werden jährlich auf Haushaltsebene und individuell erhoben. Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
+Zur Untersuchung der länderübergreifenden Einkommensverteilung der EU28 verwenden wir Daten der EU-SILC Erhebung (European Union Statistics on Income and Living Conditions), da diese für den Zeitraum in welchem sie verfügbar sind eine national repräsentative sowie international vergleichbare Datenquelle darstellen, welche nur die Nachteile aufweist die üblicherweise mit Umfrageerhebungen einhergehen. Ebenjene Schwachstellen, wie etwa der "non-response bias", werden nachträglich durch Gewichtung korrigiert, so dass von einer Annäherung der berechneten Verteilungsmaße an ihre realen Größen innerhalb der Bevölkerung auszugehen ist. Für unsere Zwecke ist vor allem die internationale Vergleichbarkeit der EU SILC Daten hervorzuheben. Das Höchstmaß an Vereinheitlichung von Fragestellungen und (Einkommens-)definitionen ermöglicht erst die Konstruktion von Verteilungsmaßen auf länderübergreifender Ebene. 
+
+Für die gegenständliche Analyse stehen EU SILC Daten von 2004 bis 2017 zur Verfügung. Da wir eine Untersuchung der Einkommensverteilung der EU anstreben, können aber nicht alle Daten miteinbezogen werden. So werden erst ab 2008 alle Mitglieder der damaligen EU27 im EU SILC erfasst, während die Daten für die EU28 schon ab 2010 zur Verfügung stehen, obwohl Kroatien erst im Jahr 2013 offiziell Mitglied der EU wurde. Darüber hinaus sind zum aktuellen Zeitpunkt für 2017 nur Daten für 26 Länder verfügbar, während Großbritannien und Irland fehlen. Wir fokussieren die Analyse daher auf den Zeitraum 2008 bis 2016, wobei der Untersuchungsgegenstand für 2008 und 2009 die EU27, aber bereits ab 2010 die EU28 ist. Wir beziehen Kroatien bereits ab 2010 ein, da wir der Auffassung sind, dass das intensive Annäherungsverfahren für angehende EU Mitglieder eine frühere Aufnahme in die Berechnungen der Einkommensverteilung durchaus rechtfertigen können, während ein etwaiger Effekt durch den offiziellen Beitritt zudem erst durch die frühere Aufnahme zu beobachten ist.
+
+EU-SILC Daten werden jährlich, sowohl auf Haushalts- als auch auf Personenebene, erhoben. Da Einkommen aus unterschiedlichen Quellen hervorgehen und sich zudem auf Haushalts- und Personenebene unterscheiden, definieren wir aus Gründen der Vergleichbarkeit und Reproduzierbarkeit für die vorliegende Untersuchung folgende Einkommensvariablen und Grundgesamtheiten, welche hier kurz beschrieben und im Appendix genau erklärt werden.
+
+
+
+beschreiben der daten und manipulation - grundgesamtheiten (übersicht im appendix)
+
+
+Die  Es handelt sich hierbei um Paneldaten, welche es ermöglichen die Stichproben über mehrere Jahre zu beobachten. Diese Daten beziehen sich auf sozioökonomische Faktoren wie Einkommen, Bildung, Herkunft und vieles mehr. 
 Wir unterscheiden in den Berechnungen zwischen zweierlei Arten von Grundgesamtheiten. Bei P1 wird die Annahme getroffen, dass das gesamte verfügbare Einkommen auf alle im Haushalt lebenden Personen gleich verteilt wird. 
 Bei P2 werden persönliche Einkommen der Person zugeschrieben, die sie erwirtschaftet, Einkommensarten, die an den Haushalt gezahlt werden gleich an alle Mitglieder über neunzehn gleich aufgeteilt. 
 Der Fokus der Berechnungen bezieht sich auf jene Einkommen nach Abzug der Steuern und Erhalt von Transferzahlungen. 
 
 
 ## Indikatoren
+
+hier könnten indikatoren und ergebnisse zusammen betrachtet werden
 
 Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren.
 
@@ -167,12 +190,6 @@ Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeign
 Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
 Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
-# Empirie
-
-Aufgrund der EU Erweiterungen variiert die bisherige Literatur, je nach dem wann sie veröffentlicht wurde vor allem an den untersuchten Ländern. Das Papier von Beblo und Knaus (2001)  wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index, dieser beträgt 0,1849 für die EURO10  basierend auf Daten von 1995 ECHP. Ein von Papatheodorou and Pavlopoulos
-(2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. Kranzinger (2018) hat ebenso EU SILC verwendet den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
-
-Oben genannte Autoren beschäftigen sich auch mit der Frage Einkommensverteilungen innerhalb der Länder aufgrund demographischer Gruppen. Dabei wurden Haushalte nach Alter eingeteilt, eine Gruppe bilden Haushalte wo das Oberhaupt älter als 59 ist und die Haushalte, wo die älteste Person Unter 60 ist wurden nochmals unterteilt je nach dem ob Kinder im Haushalt sind oder nicht. Es wurde die EU an sich untersucht sowie die einzelnen Länder, dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als in den Jüngern. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen sowie auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen. 
 
 # Ergebnisse
 # Theil Index 
@@ -264,10 +281,82 @@ xyplot(mean.p1 + median.p1 ~ year, indicators.p1, type = "b")
 
 # Zusammenfassung
 
+potentielle Folgen eines Brexit? UK inequality share!
+
 
 # Literatur
 
 # Appendix
+
+## Appendix A: Definitionen von Einkommensvariablen und Grundgesamtheiten
+
+### Einkommensvariablen
+
+**1. Pre-tax factor income (Canberra: primary income)**
+
+Summe aus:
+
+(1) Einkommen aus Arbeit (inkl. Selbstständige)
+
+    - gross employee cash or near cash income (PY010G), 
+    - company car (PY021G), 
+    - gross cash benefits or losses from self-employment (including royalties) (PY050G),
+    - income received by people aged under 16 (HY110G);
+
+(2) Vermögenseinkommen
+
+    - income from rental of a property or land (HY040G),
+    - interests, dividends, profit from capital investments in unincorporated business (HY090G),
+    - pensions received from individual private plans (PY080G),
+
+**2. Pre-tax national income**
+
+(1) $+$ (2) $+$
+
+(3) Pensionen + Arbeitslosengeld
+
+    - unemployment benefits (PY090G), 
+    - old-age benefits (PY100G),
+
+**3. Post-tax disposable income**
+
+(1) $+$ (2) $+$ (3) $+$
+
+(4) Alle anderen erhaltenen Transferzahlungen
+
+    - survivor' benefits (PY110G), 
+    - sickness benefits (PY120G), 
+    - disability benefits (PY130G), 
+    - education-related allowances (PY140G);
+    - family/children related allowances (HY050G), 
+    - social exclusion not elsewhere classified (HY060G), 
+    - housing allowances (HY070G), 
+    - regular inter-household cash transfers received (HY080G),
+
+(5) abzüglich aller Steuern und Sozialversicherungsabgaben
+
+    - regular taxes on wealth (HY120G), 
+    - regular inter-household cash transfer paid (HY130G), 
+    - tax on income and social insurance contributions (HY140G).
+
+ 
+
+### Grundgesamtheiten
+
+Einige Einkommenskomponenten sind nur auf Haushaltsebene verfügbar. Diese Einkommensvariablen sollen auf zwei unterschiedlichen Varianten auf die Individuen aufgeteilt werden. Innerhalb der beiden Grundgesamtheiten werden keine weiteren Anpassungen des Samples vorgenommen, dh. alle Indikatoren im Bereich P1 und P2 werden jeweils mit der gleichen Anzahl an Beobachtungen berechnet.
+
+
+**P1 (Eurostat): Gesamte Bevölkerung & equal sharing of resources within household. **
+
+Bilden Sie jeweils die Summe der entsprechenden Einkommen im Haushalt (für post-tax disposable income sollte dies hy020 entsprechen), dividieren dies durch den Äquivalenzfaktor (hx050) und ordnen dieses Äquivalenzeinkommen allen Personen (auch jenen unter 16 Jahren, daher SILC – Personenregister, Tabelle R) zu. 
+
+**P2 (wid.world):Nur Personen >= 20 Jahre & partial sharing of resources **
+
+Bilden Sie die Einkommensaggregate, persönliche Einkommen bleiben den jeweiligen Personen vorbehalten, Einkommensarten die nur auf Haushaltsebene verfügbar sind werden durch die Anzahl der HH Mitglieder >= 20 Jahren dividiert und allen zu gleichen Teilen zugeordnet. Personen unter 20 Jahren sollen vor der Berechnung der Ungleichheitsindikatoren ausgeschlossen werden. 
+
+
+## Appendix B: Auswertungen zu P2
+
 
 ```{r echo=FALSE, message=FALSE}
 
