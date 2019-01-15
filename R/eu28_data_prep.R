@@ -41,7 +41,7 @@ silc.d.store$db020[silc.d.store$db020=="GR"] <- "EL"
 silc.r.store$rb020[silc.r.store$rb020=="GR"] <- "EL"
 
 
-# Can we even compute meaningful statistics for the EU28?
+# Can we even compute meaningful statistics for the EU28? Yes, the weights adjust for the different sample sizes per country.
 table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2014])
 
 
@@ -168,12 +168,18 @@ silc.pdh.p2.store <- silc.pdh.p2.store %>% select(-statinfo, -unit, -currency) %
 silc.rhdp.p1.store <- left_join(silc.rhdp.p1.store, exc, by = c("rb010"="time", "rb020"="country"))
 silc.rhdp.p1.store <- silc.rhdp.p1.store %>% select(-statinfo, -unit, -currency) %>% rename("xr" = "values")
 
+# in addition, we have to make sure that all countries that joined the Euro area at some point have an exchange rate of 1, since the local currency for the ppp for those countries is also the Euro
+silc.pdh.p2.store <- silc.pdh.p2.store %>% mutate(px010 = if_else(pb020 %in%  c("CY", "EE", "LT", "LV", "SK", "SI", "MT"), 1, px010))
+silc.rhdp.p1.store <- silc.rhdp.p1.store %>% mutate(hx010 = if_else(rb020 %in%  c("CY", "EE", "LT", "LV", "SK", "SI", "MT"), 1, hx010))
+
 # calculate ppp adjusted incomes
 silc.p1.ppp.store <- silc.rhdp.p1.store %>% mutate_at(vars(equivalent_pre_tax_factor_income:equivalent_post_tax_disposable_income_imputed), funs(if_else(hx010==0, . * xr / ppp, . * hx010 / ppp)))
 rm(silc.rhdp.p1.store)
 
 silc.p2.ppp.store <- silc.pdh.p2.store %>% mutate_at(vars(pre_tax_factor_income:post_tax_disposable_income), funs(if_else(px010==0, . * xr / ppp, . * px010 / ppp)))
 rm(silc.pdh.p2.store)
+
+
 
 # save data ---------------------------------------------------------------
 
