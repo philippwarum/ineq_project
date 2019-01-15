@@ -1,25 +1,13 @@
 ---
+title: "EU28"
 output:
-  pdf_document: default
-  html_document: default
----
-
-
-
- ---
-title: "Einkommensverteilung in Österreich"
-subtitle: "2063 - Ökonomie der Verteilung"
-author: "Nikolas Kuschnig & Casper Engelen"
-abstract: "Dieses Dokument stellt einige Funktionen von Rmarkdown vor und bietet eine simple Grundstruktur für Länder-Reports."
-keywords: "a, b, c"
-date: '`r format(Sys.time(), "%d %B, %Y")`'
-output: 
   pdf_document:
     toc: true
-    includes: 
-      in_header: header.tex
-bibliography: references.bib
+    number_sections: true
+    toc_depth: 2
+  bibliography: references.bib  
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -134,16 +122,20 @@ untersuchen - einkommensverteilung eu28 - silc - datenbearbeitung - verschiedene
 
 Zur Untersuchung der länderübergreifenden Einkommensverteilung der EU28 verwenden wir Daten der EU-SILC Erhebung (European Union Statistics on Income and Living Conditions), da diese für den Zeitraum in welchem sie verfügbar sind eine national repräsentative sowie international vergleichbare Datenquelle darstellen, welche nur die Nachteile aufweist die üblicherweise mit Umfrageerhebungen einhergehen. Ebenjene Schwachstellen, wie etwa der "non-response bias", werden nachträglich durch Gewichtung korrigiert, so dass von einer Annäherung der berechneten Verteilungsmaße an ihre realen Größen innerhalb der Bevölkerung auszugehen ist. Für unsere Zwecke ist vor allem die internationale Vergleichbarkeit der EU SILC Daten hervorzuheben. Das Höchstmaß an Vereinheitlichung von Fragestellungen und (Einkommens-)definitionen ermöglicht erst die Konstruktion von Verteilungsmaßen auf länderübergreifender Ebene. 
 
-Für die gegenständliche Analyse stehen EU SILC Daten von 2004 bis 2017 zur Verfügung. Da wir eine Untersuchung der Einkommensverteilung der EU anstreben, können aber nicht alle Daten miteinbezogen werden. So werden erst ab 2008 alle Mitglieder der damaligen EU27 im EU SILC erfasst, während die Daten für die EU28 schon ab 2010 zur Verfügung stehen, obwohl Kroatien erst im Jahr 2013 offiziell Mitglied der EU wurde[^1]. Darüber hinaus sind zum aktuellen Zeitpunkt für 2017 nur Daten für 26 Länder verfügbar, während Großbritannien und Irland fehlen. Wir fokussieren die Analyse daher auf den Zeitraum 2008 bis 2016[^2], wobei der Untersuchungsgegenstand für 2008 und 2009 die EU27, aber bereits ab 2010 die EU28 ist. Wir beziehen Kroatien bereits ab 2010 ein, da wir der Auffassung sind, dass das intensive Annäherungsverfahren für angehende EU Mitglieder eine frühere Aufnahme in die Berechnungen der Einkommensverteilung durchaus rechtfertigen können, während ein etwaiger Effekt durch den offiziellen Beitritt zudem erst durch die frühere Aufnahme zu beobachten ist.
+Für die gegenständliche Analyse stehen EU SILC Daten von 2004 bis 2017 zur Verfügung. Da wir eine Untersuchung der Einkommensverteilung der EU anstreben, können aber nicht alle Daten miteinbezogen werden. So werden erst ab 2008 alle Mitglieder der damaligen EU27 im EU SILC erfasst[^1], während die Daten für die EU28 schon ab 2010 zur Verfügung stehen, obwohl Kroatien erst im Jahr 2013 offiziell Mitglied der EU wurde[^2]. Darüber hinaus sind zum aktuellen Zeitpunkt für 2017 nur Daten für 26 Länder verfügbar, während Großbritannien und Irland fehlen. Wir fokussieren die Analyse daher auf den Zeitraum 2007 bis 2016[^3], wobei der Untersuchungsgegenstand für 2007 bis 2009 die EU27[^4], aber bereits ab 2010 die EU28 ist. Wir beziehen Kroatien bereits ab 2010 ein, da wir der Auffassung sind, dass das intensive Annäherungsverfahren für angehende EU Mitglieder eine frühere Aufnahme in die Berechnungen der Einkommensverteilung durchaus rechtfertigen können, während ein etwaiger Effekt durch den offiziellen Beitritt zudem erst durch die frühere Aufnahme zu beobachten ist.
 
-[^1]: Die Daten für die Schweiz, Island, Norwegen und Serbien, welche im Beobachtungszeitraum im EU-SILC ebenfalls teilweise verfügbar sind, werden von der Analyse ausgeschlossen.
-[^2]: Sämtliche Berechnungen werden für alle Jahre in denen Daten verfügbar sind durchgeführt, aber nur für diesen Zeitraum untersucht.
+[^1]: Im Jahr 2007 fehlt jedoch lediglich Malta.
+[^2]: Die Daten für die Schweiz, Island, Norwegen und Serbien, welche im Beobachtungszeitraum im EU-SILC ebenfalls teilweise verfügbar sind, werden von der Analyse ausgeschlossen.
+[^3]: Sämtliche Berechnungen werden für alle Jahre in denen Daten verfügbar sind durchgeführt, aber nur für diesen Zeitraum untersucht.
+[^4]: Da Malta im Jahr 2008 einen Anteil von nur 0,07% der Ungleichheit gemessen am Theil Index für disposable income (P1) der EU27 ausmacht (Siehe [Theil Index]), scheint die Berechnung der Verteilungsmaße für 2007, zumindest als Approximation für die Ungleichheit der EU27, auch ohne Malta gerechtfertigt.
 
 EU-SILC Daten werden jährlich, sowohl auf Haushalts- als auch auf Personenebene, erhoben. Da Einkommen aus unterschiedlichen Quellen hervorgehen und sich zudem auf Haushalts- und Personenebene unterscheiden, definieren wir aus Gründen der Vergleichbarkeit und Reproduzierbarkeit für die vorliegende Untersuchung folgende Einkommensvariablen und Grundgesamtheiten, welche hier kurz beschrieben und im Appendix genau erklärt werden. Zunächst zu den Einkommensvariablen. Beim "pre-tax factor income" handelt es sich um die Summe der Primäreinkommen aus Arbeit und Vermögen, während beim "pre-tax national income" Pensionen und Arbeitslosengeld hinzukommen. Das "post-tax disposable income" stellt schließlich das verfügbare Einkommen, nach Erhalt aller sonstigen staatlichen Transferleistungen und abzüglich aller Steuern und Abgaben, dar. Durch die Gegenüberstellung dieser Einkommensvariablen lässt sich also feststellen, wie die staatliche Umverteilung auf die Einkommensverteilung wirkt.
 
 Da Einkommen sowohl auf Haushalts- als auch auf Personenebene entstehen, wird zur Berechnung von Individualeinkommen eine Konvention benötigt, die festlegt wie die unterschiedlichen Haushaltseinkommen den Personen zugeteilt werden. Aus diesem Grund bilden wir zwei Grundgesamtheiten (P1 und P2), bei welchen diese Zuordnung auf unterschiedliche Weise funktioniert. Im Fall von P1 werden sämtliche Einkommen die in einem Haushalt anfallen (inkl. Einkommen auf Personenebene) summiert, durch einen Äquivalenzfaktor dividiert und anschließend allen Personen in einem Haushalt (auch Kindern) zugeteilt. Der Äquivalenzfaktor berücksichtigt dabei den Umstand, dass in Mehrpersonenhaushalten manche Kosten durch Ressourcenteilung pro Person geringer ausfallen (Waschmaschine, Kühlschrank, etc.) und das verfügbare Einkommen somit höher ist. Bei der Grundgesamtheit P1 wird also davon ausgegangen, dass sämtliche Einkommen eines Haushalts zu gleichen Teilen unter den Bewohnern aufgeteilt werden. Demgegenüber bleiben persönliche Einkommen bei der Grundgesamtheit P2 den jeweiligen Personen vorbehalten, während Einkommen auf Haushaltsebene gleichermaßen auf die Bewohner älter als 19 Jahre aufgeteilt werden, während Personen unter 20 aus den Berechnungen ausgeschlossen werden. Im Fall von P2 werden Ressourcen im Haushalt also nur partiell geteilt.
 
-Nach der Berechnung der Einkommensvariablen für alle Grundgesamtheiten, Länder und Jahre, müssen die Daten noch weiter verarbeitet werden, um die Konstruktion von länderübergreifenden Einkommensverteilungen zu ermöglichen. Zunächst werden die Einkommensdaten sämtlicher Länder im EU-SILC bereits in Euro angegeben. Um diese vergleichbar zu machen, muss aber ebenso berücksichtigt werden, dass sich die Preisniveaus zwischen den Ländern unterscheiden und ein Euro somit je nach Land unterschiedlich viel wert ist. Dazu bereinigen wir die Einkommensvariablen um Kaufkraftparitäten, welche wir von Eurostat beziehen.
+Nach der Berechnung der Einkommensvariablen für alle Grundgesamtheiten, Länder und Jahre, müssen die Daten noch weiter verarbeitet werden, um die Konstruktion von länderübergreifenden Einkommensverteilungen zu ermöglichen. Zunächst werden die Einkommensdaten sämtlicher Länder im EU-SILC bereits in Euro angegeben. Um diese vergleichbar zu machen, muss aber ebenso berücksichtigt werden, dass sich die Preisniveaus zwischen den Ländern unterscheiden und ein Euro somit je nach Land unterschiedlich viel wert ist. Dazu bereinigen wir die Einkommensvariablen um Kaufkraftparitäten, welche wir von Eurostat beziehen.[^5]
+
+[^5]: Hierbei ist zu beachten, dass Eurostat Euroländer so behandelt, als wäre ihre Landeswährung auch vor dem Beitritt zur Eurozone der Euro gewesen. Deshalb darf für Länder die erst im Beobachtungszeitraum dem Euro beigetreten sind (CY, EE, LT, LV, SK, SI, MT) zur Kaufkraftbereinigung selbst vor dem Beitritt keine Währungsumrechnung erfolgen, da sich die Kaufkraftparitäten bereits auf den Euro als Landeswährung beziehen. Siehe z.B. https://ec.europa.eu/eurostat/cache/metadata/FR/nama10_esms.htm
 
 Schlussendlich erhalten wir national repräsentative Samples mit vergleichbaren Einkommensdaten für alle Jahre im Beobachtungszeitraum. Da unser Ziel jedoch die Untersuchung der länderübergreifenden Einkommensverteilung der EU und nicht die der Einkommensverteilungen der Länder ist, müssen wir darüber hinaus dem Umstand gerecht werden, dass sich die Bevölkerungsgrößen unterscheiden und jedes Land damit unterschiedlich stark in der länderübergreifenden Einkommensverteilung vertreten ist. Auch in diesem Zusammenhang erweist sich die Verwendung von EU-SILC Daten als günstig, da der Faktor Bevölkerungsanzahl bereits in den Stichprobengewichten berücksichtigt ist, welche im Datensatz zur Verfügung gestellt werden. Somit können unter der Verwendung dieser Gewichte Verteilungsmaße für die länderübergreifende Einkommensverteilung der EU berechnet werden.
 
@@ -194,6 +186,9 @@ Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann 
 
 
 # Einkommensungleichheit in der EU
+
+Zunächst werden einige häufig verwendete Verteilungsmaße dargestellt. Anschließend werden die Ergebnisse für die Zerlegung des Teil Index im Detail diskutiert.
+
 
 ## Basisindikatoren
 
