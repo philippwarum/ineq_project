@@ -59,6 +59,9 @@ Zitieren aus *BibTeX*:
 - @humer2013bedeutung
 - @kranzinger2018decomposition
 - @beblo2001
+- @papatheodorou2014income
+- @paas2006regional
+- @fredriksen2012income
 
 Block-Zitate:
 
@@ -105,10 +108,10 @@ Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachte
 # Empirie
 
 Der Zusammenschluss der Länder zu einem Wirtschaftsraum und einer Währungsgemeinschaft, der Europäischen Union, soll eine Annäherung auf verschiedenen Ebenen herbeiführen. Am Beispiel der Ungleichheit der Einkommen, spiegeln sich verschiedene Einflüsse wieder. 
-Ein grundlegender Faktor ist das Wirtschaftswachstum. Fredriksen(2012)  legte hierauf den Fokus seiner Forschung. Er stellte dabei fest, dass die obere Perzentile der Einkommen bei positiver Entwicklung der Volkswirtschaft am meisten profitiert. 
+Ein grundlegender Faktor ist das Wirtschaftswachstum. @Fredriksen(2012)  legte hierauf den Fokus seiner Forschung. Er stellte dabei fest, dass die obere Perzentile der Einkommen bei positiver Entwicklung der Volkswirtschaft am meisten profitiert. 
 
-Ein weiterer Gesichtspunkt im Bezug auf die Einkommensverteilung ist die geographische Anordnung. Es ist zu beobachten, dass innerhalb der Länder inwirtschaftlich „stärkere“ und „schwächere“ Regionen untereilt werden kann. Dieser räumliche Faktor sowie die Konvergenz der Einkommen innerhalb der EU wurde von Paas und Schlitte (2006) analysiert. Ihre Forschungsergebnisse zeigen auf, dass die Einkommen vor allem zwischen den ursprünglichen EU-15 und den neueren Mitgliedsstaaten signifikant divergieren. Allerdings ist erkennbar, dass die regionale Ungleichheit bereits auf nationaler Ebene zu Spannungen führen kann. Dies auszugleichen ist oft eine Herausforderung für die Politik auf nationaler Ebene, und noch eine größere auf supranationaler Ebene.
-Die Publikation von Beblo und Knaus (2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index.Für die EURO10 basierend auf Daten von 1995 ECHP beträgt dieser 0,1849. Ein von Papatheodorou und Pavlopoulos (2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. Kranzinger (2018) hat ebenso EU SILC verwendet und den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
+Ein weiterer Gesichtspunkt im Bezug auf die Einkommensverteilung ist die geographische Anordnung. Es ist zu beobachten, dass innerhalb der Länder inwirtschaftlich „stärkere“ und „schwächere“ Regionen untereilt werden kann. Dieser räumliche Faktor sowie die Konvergenz der Einkommen innerhalb der EU wurde von @Paas(2006) analysiert. Ihre Forschungsergebnisse zeigen auf, dass die Einkommen vor allem zwischen den ursprünglichen EU-15 und den neueren Mitgliedsstaaten signifikant divergieren. Allerdings ist erkennbar, dass die regionale Ungleichheit bereits auf nationaler Ebene zu Spannungen führen kann. Dies auszugleichen ist oft eine Herausforderung für die Politik auf nationaler Ebene, und noch eine größere auf supranationaler Ebene.
+Die Publikation von @Beblo(2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index.Für die EURO10 basierend auf Daten von 1995 ECHP beträgt dieser 0,1849. Ein von @Papatheodorou und Pavlopoulos (2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. @Kranzinger (2018) hat ebenso EU SILC verwendet und den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
 Oben genannte Autoren beschäftigen sich auch mit der Frage der Einkommensverteilungen anhand demographischer Gruppen innerhalb der Länder. Dabei wurden Haushalte nach Alter eingeteilt. Es wird in Gruppen je nach Alter des Oberhauptes eingeteilt. Es wurde die EU sowie die einzelnen Länder analysiert., Dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als die in den Jüngeren. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen, zum anderen auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen.
  
 
@@ -181,7 +184,7 @@ $$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})
 | $\mu$   | Mittelwert des Einkommens  |
 | $\mu_k$   | Mittelwert des Einkommens der Untergruppe k   |
 
-Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann man die ungleichheit innerhalb einer Gruppe untersuchen sowie die Ungleichheilt zwischen den Gruppen. Wir haben unsere Gesamtheit des EU28-Landes in die 28 Mitgliedsländer unterteilt. Damit ist es möglich die Anteile der einzelnen Länder aufzuzeigen, sowie das ökonomische Gewicht innerhalb des EU28-Landes.
+Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann man die ungleichheit innerhalb einer Gruppe untersuchen sowie die Ungleichheilt zwischen den Gruppen. Wir haben unsere Gesamtheit des EU28-Landes in die 28 Mitgliedsländer unterteilt. Damit ist es möglich die Anteile der einzelnen Länder aufzuzeigen, sowie das ökonomische Gewicht innerhalb des EU28-Landes.(@Kranzinger)
 
 
 
@@ -243,9 +246,6 @@ Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von übe
 
 
 ```{r echo=FALSE, warning=FALSE}
-
-
-library(dplyr)
 
 
 
