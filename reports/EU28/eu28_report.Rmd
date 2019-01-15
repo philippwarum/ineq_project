@@ -150,13 +150,16 @@ Schlussendlich erhalten wir national repräsentative Samples mit vergleichbaren 
 
 ## Indikatoren
 
-hier könnten indikatoren und ergebnisse zusammen betrachtet werden
-
-Um ein klares Bild der Einkommensverteilung zu schaffen betrachten wir folgende Indikatoren.
+Hier soll ein kurzer theoretischer Überblick zu den verwendeten Indikatoren gegeben werden. Zunächst besprechen wir einige häufig verwendete Verteilungsmaße, während wir anschließend auf die besondere Eignung des Theil Index für die Analyse von länderübergreifenden Einkommensverteilungen eingehen.
 
 ### Median und Mittelwert 
 Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
 Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
+
+### Quantile 
+Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
+Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
+Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
 ### Gini und Theil Index
 Da unser Fokus auf der Einkommensungleichheit liegt, ist es wichtig ein geeignetes Maß dafür zu nutzen. 
@@ -188,14 +191,56 @@ $$T(1) = \sum_{k=1}^K s_k \times T(1)_k + \sum_{k=1}^K s_k ln(\frac{\mu_k}{\mu})
 
 Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann man die ungleichheit innerhalb einer Gruppe untersuchen sowie die Ungleichheilt zwischen den Gruppen. Wir haben unsere Gesamtheit des EU28-Landes in die 28 Mitgliedsländer unterteilt. Damit ist es möglich die Anteile der einzelnen Länder aufzuzeigen, sowie das ökonomische Gewicht innerhalb des EU28-Landes.
 
-### Quantile 
-Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
-Wir werden die P80/P20 - Rate berechnen, dabei werden die nach der Größe Sortierten Stichproben, in hundert gleich große Gruppen eingeteilt, diese bilden die Perzentile. Für die zu berechnende Rate der oberen 20% Einkommen mit der der Unteren 20% berechnen. Je höher diese Rate ist, desto größer ist die Ungleichheit. 
-Zusätzlich analysieren wir den Anteil der obersten 10% der Einkommen.
 
 
-# Ergebnisse
-# Theil Index 
+# Einkommensungleichheit in der EU
+
+## Basisindikatoren
+
+
+Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ungleichheit über die Jahre 2004 bis 2017. Dabei ist zu beachten, dass erst ab dem Jahr 2008 alle EU –Staaten enthalten sind. In den Jahren davor ist die Ungleichheit recht hoch, was vermutlich mit der Zusammensetzung der Länder zu erklären ist. Die Indikatoren wurden dabei länderübergreifend berechnet. Bei vielen der berechneten Indikatoren fällt auf, dass die Jahre 2005 und 2006 Ausreißer sind, wir vermuten einen Zusammenhang mit der Erweiterung der SILC daten um einige Länder und deren Daten.
+
+In Graph 1 kann man einen stetigen Anstieg bei den Medianeinkommen sowie bei den mittleren Einkommen verzeichnen. In den Jahren 2006, 2009, 2013 fallen Medianeinkommen sowie die Mittleren Einkommen, in den Jahren 2009 und 2013 ist vermutlich die Finanzkriese und die darauffolgende EURO- Krise ein bedeutender Faktor. Der Median wird oft genutzt um einschätzen zu können in welchem Bereich die Mittelschicht der Gesellschaft liegt. Generell sind die Medianeinkommen niedriger als die Mittleren Einkommen. 
+
+Die 80/20 Rate zeigt auf, dass die das 80. Perzentil ungefähr das 6-fache vom 20. Perzentil verdient, dieser Wert bewegt sich im beobachteten Zeitraum in einem Rahmen von 5,311 und 9,33, wenn die die Ausreißer (2005 und 2006) außer acht gelassen werden.  
+Bei den Top 10 Prozent ist zu sehen, dass 10% der Bevölkerung ungefähr 25% des Gesamteinkommens verdienen dieser Wert ist über die Jahre leicht gesunken. 
+Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat seit 2009 liegt er bei einem Wert von 0.33. 
+
+
+```{r echo=FALSE, message=FALSE}
+
+
+
+load("../../data/eu28_indicators.RData")
+
+
+
+indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
+
+
+data_di <- indicators.p1 %>% select(year, contains("eptdi"))
+data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
+data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
+
+
+
+knitr::kable(data_di)
+
+```
+
+```{r echo=FALSE, message=FALSE}
+
+#plot of mean and median income over time
+mean.p1 <- indicators.p1$mean_eptdi
+median.p1 <- indicators.p1$median_eptdi
+
+xyplot(mean.p1 + median.p1 ~ year, indicators.p1, type = "b")
+
+```
+
+
+
+## Theil Index 
 In Tabelle -- vergleichen die Ergebnisse des Theil Indexes der EU-28 untereinander und betrachten dabei vor allem die Unterschiede zwischen 2010 und 2016. Der von uns Für das EU-28-Land berentete Theil beläuft sich im Jahr 2010 auf 0,201 und fällt marginal auf 0,198 im Jahr 2016. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich von 0,14 auf 0,13. 
 Es liegt kein konkretes Muster vor, bei einigen Ländern steigt der Theil Index, beispielsweise in Dänemark, in anderen Ländern wie der Slowakei und Belgien fällt er.
 Des Weiteren analysieren wir die Anteile der Ungleichverteilung der Länder, in unserem EU-28-Land, sowie das wirtschaftliche Gewicht der Länder. Welches sich zusätzlich am BIP orientiert, danach ist Deutschland mit 19,25 % bereits 2010 stark repräsentiert, dieses ökonomische Gewicht baut es bis 2016 auf 21,00% aus, der Anteil an der Ungleichheit liegt 2016 allerdings nur bei 16,77%.
@@ -237,48 +282,6 @@ theil_2016.p1 <- theil_2016.p1 %>% mutate_at(vars(contains("theil"):contains("we
 
 knitr::kable(theil_2010.p1)
 knitr::kable(theil_2016.p1)
-
-```
-
-## Indikatoren
-
-Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ungleichheit über die Jahre 2004 bis 2017. Dabei ist zu beachten, dass erst ab dem Jahr 2008 alle EU –Staaten enthalten sind. In den Jahren davor ist die Ungleichheit recht hoch, was vermutlich mit der Zusammensetzung der Länder zu erklären ist. Die Indikatoren wurden dabei länderübergreifend berechnet. Bei vielen der berechneten Indikatoren fällt auf, dass die Jahre 2005 und 2006 Ausreißer sind, wir vermuten einen Zusammenhang mit der Erweiterung der SILC daten um einige Länder und deren Daten.
-
-In Graph 1 kann man einen stetigen Anstieg bei den Medianeinkommen sowie bei den mittleren Einkommen verzeichnen. In den Jahren 2006, 2009, 2013 fallen Medianeinkommen sowie die Mittleren Einkommen, in den Jahren 2009 und 2013 ist vermutlich die Finanzkriese und die darauffolgende EURO- Krise ein bedeutender Faktor. Der Median wird oft genutzt um einschätzen zu können in welchem Bereich die Mittelschicht der Gesellschaft liegt. Generell sind die Medianeinkommen niedriger als die Mittleren Einkommen. 
-
-Die 80/20 Rate zeigt auf, dass die das 80. Perzentil ungefähr das 6-fache vom 20. Perzentil verdient, dieser Wert bewegt sich im beobachteten Zeitraum in einem Rahmen von 5,311 und 9,33, wenn die die Ausreißer (2005 und 2006) außer acht gelassen werden.  
-Bei den Top 10 Prozent ist zu sehen, dass 10% der Bevölkerung ungefähr 25% des Gesamteinkommens verdienen dieser Wert ist über die Jahre leicht gesunken. 
-Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat seit 2009 liegt er bei einem Wert von 0.33. 
-
-
-```{r echo=FALSE, message=FALSE}
-
-
-
-load("../../data/eu28_indicators.RData")
-
-
-
-indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
-
-
-data_di <- indicators.p1 %>% select(year, contains("eptdi"))
-data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
-data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
-
-
-
-knitr::kable(data_di)
-
-```
-
-```{r echo=FALSE, message=FALSE}
-
-#plot of mean and median income over time
-mean.p1 <- indicators.p1$mean_eptdi
-median.p1 <- indicators.p1$median_eptdi
-
-xyplot(mean.p1 + median.p1 ~ year, indicators.p1, type = "b")
 
 ```
 
