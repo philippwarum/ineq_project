@@ -5,8 +5,15 @@ output:
     toc: true
     number_sections: true
     toc_depth: 2
-  bibliography: references.bib  
+  bibliography: references.bib
+header-includes:
+ \usepackage{float}
+ \floatplacement{figure}{H} 
 ---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.pos = 'H')
+```
 
 
 ```{r setup, include=FALSE}
@@ -17,13 +24,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Rmarkdown Demonstration
 
-```{r, include=FALSE}
+```{r, include=FALSE, message=FALSE}
 # load packages
 library(dplyr)
 library(latticeExtra)
 library(RColorBrewer)
 library(ggplot2)
+library(cowplot)
 ```
+
+```{r include=FALSE}
+#load data
+
+load("../../data/eu28_indicators.RData")
+
+```
+
 
 ```{r, eval=FALSE}
 cat("Nicht ausgeführt, angezeigt")
@@ -87,7 +103,7 @@ Simple Tabellen:
 
 R-Plots:
 
-```{r fig-rnorm, echo=FALSE, fig.cap="Inklusive Optionen", fig.width=4}
+```{r fig-rnorm, echo=FALSE, fig.cap="Inklusive Optionen", fig.asp=0.4}
 plot(rnorm(50), rnorm(50))
 ```
 
@@ -196,6 +212,72 @@ Zunächst werden einige häufig verwendete Verteilungsmaße dargestellt. Anschli
 ## Basisindikatoren
 
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median", fig.asp=0.4, fig.pos='H'}
+
+indicators.p1 <- indicators.p1 %>% filter(year %in% c(2007:2016))
+indicators.p1 <- mutate_all(indicators.p1, function(x) as.double(as.character(x)))
+
+
+
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=mean_eptdi, colour = "eptdi", linetype = "mean")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=mean_eptni, colour = "eptni", linetype = "mean"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=mean_eptfi, colour = "eptfi", linetype = "mean"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=median_eptdi, colour = "eptdi", linetype = "median")) 
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=median_eptni, colour = "eptni", linetype = "median"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=median_eptfi, colour = "eptfi", linetype = "median"))
+
+p
+
+```
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="80/20 Perzentilsverhältnis", fig.asp=0.4, , fig.pos='H'}
+
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=qsr8020_eptdi, colour = "eptdi")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=qsr8020_eptni, colour = "eptni")) 
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=qsr8020_eptfi, colour = "eptfi")) 
+p
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Top 10% Einkommensanteil", fig.asp=0.4, fig.pos='H'}
+
+g <- ggplot()
+g <- g + geom_line(data = indicators.p1, aes(x=year, y=top10_eptdi, colour = "eptdi")) + xlab("") + ylab("")
+g <- g + geom_line(data = indicators.p1, aes(x=year, y=top10_eptni, colour = "eptni")) 
+g <- g + geom_line(data = indicators.p1, aes(x=year, y=top10_eptfi, colour = "eptfi"))
+g
+
+```
+
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Gini und Theil Index", fig.asp=0.4, fig.pos='H'}
+
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=gini_eptdi, colour = "eptdi", linetype = "gini")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=gini_eptni, colour = "eptni", linetype = "gini"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=gini_eptfi, colour = "eptfi", linetype = "gini"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=theil_eptdi, colour = "eptdi", linetype = "theil"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=theil_eptni, colour = "eptni", linetype = "theil"))
+p <- p + geom_line(data = indicators.p1, aes(x=year, y=theil_eptfi, colour = "eptfi", linetype = "theil"))
+p
+
+```
+
+
 Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ungleichheit über die Jahre 2004 bis 2017. Dabei ist zu beachten, dass erst ab dem Jahr 2008 alle EU –Staaten enthalten sind. In den Jahren davor ist die Ungleichheit recht hoch, was vermutlich mit der Zusammensetzung der Länder zu erklären ist. Die Indikatoren wurden dabei länderübergreifend berechnet. Bei vielen der berechneten Indikatoren fällt auf, dass die Jahre 2005 und 2006 Ausreißer sind, wir vermuten einen Zusammenhang mit der Erweiterung der SILC daten um einige Länder und deren Daten.
 
 In Graph 1 kann man einen stetigen Anstieg bei den Medianeinkommen sowie bei den mittleren Einkommen verzeichnen. In den Jahren 2006, 2009, 2013 fallen Medianeinkommen sowie die Mittleren Einkommen, in den Jahren 2009 und 2013 ist vermutlich die Finanzkriese und die darauffolgende EURO- Krise ein bedeutender Faktor. Der Median wird oft genutzt um einschätzen zu können in welchem Bereich die Mittelschicht der Gesellschaft liegt. Generell sind die Medianeinkommen niedriger als die Mittleren Einkommen. 
@@ -208,8 +290,6 @@ Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat se
 ```{r echo=FALSE, message=FALSE}
 
 
-
-load("../../data/eu28_indicators.RData")
 
 
 
