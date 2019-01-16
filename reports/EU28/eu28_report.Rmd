@@ -341,14 +341,9 @@ Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von übe
 
 
 
-<<<<<<< HEAD
 
 theil.p1 <- slice(theil.p1,1:29)
-=======
-load("../../data/eu28_indicators.RData")
 
-theil.p1 <- slice(theil.p1,1:28)
->>>>>>> b87c31663b8133d63192a8b4441d786031245566
 
 
 theil.p1 <- theil.p1 %>% select(contains("2010"), contains("2016"))
