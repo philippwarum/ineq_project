@@ -30,7 +30,8 @@ library(dplyr)
 library(latticeExtra)
 library(RColorBrewer)
 library(ggplot2)
-library(cowplot)
+library(stringr)
+library(reshape2)
 ```
 
 ```{r include=FALSE}
@@ -303,19 +304,30 @@ knitr::kable(data_di)
 
 ```
 
-```{r echo=FALSE, message=FALSE}
-
-#plot of mean and median income over time
-mean.p1 <- indicators.p1$mean_eptdi
-median.p1 <- indicators.p1$median_eptdi
-
-xyplot(mean.p1 + median.p1 ~ year, indicators.p1, type = "b")
-
-```
 
 
 
 ## Theil Index 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Theil Index Inequality Shares", fig.asp=0.4, fig.pos='H'}
+
+theil.p1 <- theil.p1 %>% select(-contains("2004"), -contains("2005"), -contains("2006"), -contains("2017"))
+
+theil.melt.c <- theil.p1 %>% select(contains("countries"))
+theil.melt.i <- theil.p1 %>% select(contains("di.ineq.share"))
+
+theil.melt.c <- melt(theil.melt.c, measure.vars =  colnames(theil.melt.c)[1:10], variable.name = "c", value.name="countries")
+theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10], variable.name = "i", value.name="ineq.share")
+
+theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
+theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
+theil.i.ts <- na.exclude(theil.i.ts)
+
+t <- ggplot(theil.i.ts, aes(x = year, y = as.numeric(ineq.share))) + geom_text(aes(label = countries)) + ylab("")
+t
+```
+
+
 In Tabelle -- vergleichen die Ergebnisse des Theil Indexes der EU-28 untereinander und betrachten dabei vor allem die Unterschiede zwischen 2010 und 2016. Der von uns Für das EU-28-Land berentete Theil beläuft sich im Jahr 2010 auf 0,201 und fällt marginal auf 0,198 im Jahr 2016. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich von 0,14 auf 0,13. 
 Es liegt kein konkretes Muster vor, bei einigen Ländern steigt der Theil Index, beispielsweise in Dänemark, in anderen Ländern wie der Slowakei und Belgien fällt er.
 Des Weiteren analysieren wir die Anteile der Ungleichverteilung der Länder, in unserem EU-28-Land, sowie das wirtschaftliche Gewicht der Länder. Welches sich zusätzlich am BIP orientiert, danach ist Deutschland mit 19,25 % bereits 2010 stark repräsentiert, dieses ökonomische Gewicht baut es bis 2016 auf 21,00% aus, der Anteil an der Ungleichheit liegt 2016 allerdings nur bei 16,77%.
@@ -325,13 +337,9 @@ Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von übe
 ```{r echo=FALSE, warning=FALSE}
 
 
-library(dplyr)
 
 
-
-load("../../data/eu28_indicators.RData")
-
-theil.p1 <- slice(theil.p1,1:28)
+theil.p1 <- slice(theil.p1,1:29)
 
 
 theil.p1 <- theil.p1 %>% select(contains("2010"), contains("2016"))
