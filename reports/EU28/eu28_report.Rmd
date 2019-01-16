@@ -5,7 +5,7 @@ output:
     toc: true
     number_sections: true
     toc_depth: 2
-  bibliography: references.bib
+bibliography: references.bib
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H} 
@@ -128,7 +128,7 @@ Der Zusammenschluss der Länder zu einem Wirtschaftsraum und einer Währungsgeme
 Ein grundlegender Faktor ist das Wirtschaftswachstum. @Fredriksen(2012)  legte hierauf den Fokus seiner Forschung. Er stellte dabei fest, dass die obere Perzentile der Einkommen bei positiver Entwicklung der Volkswirtschaft am meisten profitiert. 
 
 Ein weiterer Gesichtspunkt im Bezug auf die Einkommensverteilung ist die geographische Anordnung. Es ist zu beobachten, dass innerhalb der Länder inwirtschaftlich „stärkere“ und „schwächere“ Regionen untereilt werden kann. Dieser räumliche Faktor sowie die Konvergenz der Einkommen innerhalb der EU wurde von @Paas(2006) analysiert. Ihre Forschungsergebnisse zeigen auf, dass die Einkommen vor allem zwischen den ursprünglichen EU-15 und den neueren Mitgliedsstaaten signifikant divergieren. Allerdings ist erkennbar, dass die regionale Ungleichheit bereits auf nationaler Ebene zu Spannungen führen kann. Dies auszugleichen ist oft eine Herausforderung für die Politik auf nationaler Ebene, und noch eine größere auf supranationaler Ebene.
-Die Publikation von @Beblo(2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index.Für die EURO10 basierend auf Daten von 1995 ECHP beträgt dieser 0,1849. Ein von @Papatheodorou und Pavlopoulos (2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. @Kranzinger (2018) hat ebenso EU SILC verwendet und den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet. 
+Die Publikation von @Beblo(2001) wurde in den Anfängen der EU veröffentlicht und gilt für die weitere Forschung oft als Grundlage. Sie konzipieren die Idee eines Eurolandes und berechnen dafür den Theil-Index.Für die EURO10 basierend auf Daten von 1995 ECHP beträgt dieser 0,1849. Ein von @Papatheodorou und Pavlopoulos (2014) aktualisierter Theil-Index von 0,148 beinhaltet die EU15 Staaten und wurde mit EU SILC Daten von 2008 berechnet. @Kranzinger (2018) hat ebenso EU SILC verwendet und den Theil- Index für die EU-28 für 2014 mit 0,215 berechnet.
 Oben genannte Autoren beschäftigen sich auch mit der Frage der Einkommensverteilungen anhand demographischer Gruppen innerhalb der Länder. Dabei wurden Haushalte nach Alter eingeteilt. Es wird in Gruppen je nach Alter des Oberhauptes eingeteilt. Es wurde die EU sowie die einzelnen Länder analysiert., Dabei stellte sich heraus, dass die Ungleichheit in älteren Haushalten höher ist als die in den Jüngeren. Die Unterschiede zwischen alt und jung lassen sich zum einen auf die Pensionssysteme rückführen, zum anderen auf die davor erwirtschafteten Einkommen, auf die sich die Pensionen beziehen.
  
 
@@ -377,8 +377,6 @@ knitr::kable(theil_2016.p1)
 potentielle Folgen eines Brexit? UK inequality share!
 
 
-# Literatur
-
 # Appendix
 
 ## Appendix A: Definitionen von Einkommensvariablen und Grundgesamtheiten
@@ -513,3 +511,6 @@ ggplot(theil.vgl) +
   geom_point( aes(x=countries2010, y=di.theil2016), color=rgb(0.7,0.2,0.1,0.5), size=3 ) +
   coord_flip() 
 ```
+
+
+# References
