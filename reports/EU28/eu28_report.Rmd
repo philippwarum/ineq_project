@@ -1,5 +1,8 @@
 ---
-title: "EU28"
+title: "Länderübergreifende Einkommensverteilung der EU"
+subtitle: "2063 - Ökonomie der Verteilung"
+author: "Isabelle Wabnegger & Philipp Warum"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   pdf_document:
     toc: true
@@ -13,6 +16,7 @@ header-includes:
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.pos = 'H')
+
 ```
 
 
@@ -20,11 +24,8 @@ knitr::opts_chunk$set(fig.pos = 'H')
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-\newpage
 
-# Rmarkdown Demonstration
-
-```{r, include=FALSE, message=FALSE}
+```{r, include=FALSE, message=FALSE, warning=FALSE}
 # load packages
 library(dplyr)
 library(latticeExtra)
@@ -34,85 +35,27 @@ library(stringr)
 library(reshape2)
 ```
 
-```{r include=FALSE}
+```{r include=FALSE, warning=FALSE}
 #load data
 
 load("../../data/eu28_indicators.RData")
 
+#prep data
+indicators.p1 <- indicators.p1 %>% filter(year %in% c(2007:2016))
+indicators.p1 <- mutate_all(indicators.p1, function(x) as.double(as.character(x)))
+
+theil.p1 <- theil.p1 %>% select(-contains("2004"), -contains("2005"), -contains("2006"), -contains("2017"))
+
+indicators.p2 <- indicators.p2 %>% filter(year %in% c(2007:2016))
+indicators.p2 <- mutate_all(indicators.p2, function(x) as.double(as.character(x)))
+
+theil.p2 <- theil.p2 %>% select(-contains("2004"), -contains("2005"), -contains("2006"), -contains("2017"))
+
+
 ```
 
 
-```{r, eval=FALSE}
-cat("Nicht ausgeführt, angezeigt")
-```
 
-```{r echo=FALSE}
-cat("Ausgeführt, Output angezeigt")
-```
-
-```{r}
-cat("Ausgeführt, alles angezeigt")
-```
-
-<!-- Kommentare im Dokument -->
-
-Text *kursiv* und **fett**.
-
-R-Code im Text: `r pi`
-
-LaTeX Formeln inline: ($e = mc^2$) und:
-
-$$\hat{\beta} = (X'X)^{-1}X'Y$$
- 
-
-![Bilder einfügen (xkcd)](img/xkcd_comparison.png){width=60%}
-
-[Links einfügen (Bildquelle)](https://what-if.xkcd.com/118/)
-
-Zitieren aus *BibTeX*:
-
-- [@marmot2010fair; @lancee2012income]
-- [@humer2013bedeutung, p. 571]
-- @humer2013bedeutung
-- @kranzinger2018decomposition
-- @beblo2001
-- @papatheodorou2014income
-- @paas2006regional
-- @fredriksen2012income
-
-Block-Zitate:
-
-> "Don't quote me on that."
-
-Ungeordnete Listen:
-
-- Einkommen
-- Kapital
-
-Geordnete Listen:
-
-1. Zahlen
-3. sind
-9. egal
-
-Simple Tabellen:
-<!-- Leerzeichen sind egal -->
-
-|Country  | Gini  | Theil | QSR |
-| ---     | ---   | ---   | --- |
-| AUT     | 1     | 0.5   | NA  |
-
-R-Plots:
-
-```{r fig-rnorm, echo=FALSE, fig.cap="Inklusive Optionen", fig.asp=0.4}
-plot(rnorm(50), rnorm(50))
-```
-
-Potentiell weniger simple Tabellen:
-
-Horizontale Linien:
-
----
 
 \newpage
 
@@ -207,16 +150,42 @@ Der Vorteil des Theil Indexes ist die Eigenschaft der Zerlegbarkeit, somit kann 
 
 # Einkommensungleichheit in der EU
 
-Zunächst werden einige häufig verwendete Verteilungsmaße dargestellt. Anschließend werden die Ergebnisse für die Zerlegung des Teil Index im Detail diskutiert.
+In diesem Abschnitt beschreiben wir die länderübergreifende Einkommensverteilung der EU. Dabei konzentrieren wir uns auf die Grundggesamtheit P1 und auf verfügbare Einkommen. Die Ergebnisse für P2 finden sich im Appendix. Zunächst werden einige häufig verwendete Verteilungsmaße dargestellt. Anschließend werden die Ergebnisse für die Zerlegung des Teil Index im Detail diskutiert.
 
 
 ## Basisindikatoren
 
+Um einen ersten Eindruck zu bekommen, wie sich die länderübergreifende Einkommensverteilung der EU im Zeitraum von 2007 bis 2016 entwickelt hat, wenden wir uns zunächst den bereits beschriebenen Indikatoren zu. Wie sich Tabelle 3 entnehmen lässt, scheint die Ungleichheit der Einkommensverteilung EU in den letzten Jahren im Allgemeinen gesunken zu sein. Zu einem ähnlichen Ergebnis kommen wir, wenn wir uns die gleiche Tabelle für partielle Ressourcenteilung in den Haushalten (Grundgesamtheit P2) vor Augen führen (siehe Appendix). Dort ist aber zu bemerken, dass der relative Unterschied zwischen Median- und Durchschnittseinkommen wächst, während er in Tabelle 3 annähernd gleich bleibt.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median", fig.asp=0.4, fig.pos='H'}
 
-indicators.p1 <- indicators.p1 %>% filter(year %in% c(2007:2016))
-indicators.p1 <- mutate_all(indicators.p1, function(x) as.double(as.character(x)))
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+
+
+data_di <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
+
+
+data_di <- data_di %>% select(year, contains("eptdi"))
+data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
+data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
+
+
+
+knitr::kable(data_di, caption = "Basisindikatoren, verfügbare Einkommen (P1), 2007 - 2016")
+
+```
+
+
+
+
+In Abbildung 1 kann man insgesamt einen Anstieg bei den Medianeinkommen sowie bei den mittleren Einkommen beobachten. In dieser Grafik haben wir zusätzlich zu den verfügbaren Einkommen (eptdi) auch das Primäreinkommen (eptfi) und das Primäreinkommen inkl. Arbeitslosengeld und Pensionen (epdni) dargestellt. Dabei zeigt sich, dass in Krisenjahren wie 2009 und 2013 Median und Mittelwert des Primäreinkommens zwar fallen, Median und Mittelwert der verfügbaren Einkommen aber annähernd konstant bleiben. Dies deutet auf die stabilisierende Wirkung der Wohlfahrtsstaaten hin, die sich auch auf EU Ebene bemerkbar macht. Interessanterweise liegt der Median der verfügbaren Einkommen über dem Median der Primäreinkommen, obwohl die Anzahl der positiven verfügbaren Einkommen höher ist, was ebenso den Effekt der Umverteilung auf die Ungleichheit andeutet.
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median, (P1)", fig.asp=0.4, fig.pos='H'}
 
 
 
@@ -236,7 +205,11 @@ p
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="80/20 Perzentilsverhältnis", fig.asp=0.4, , fig.pos='H'}
+Die 80/20 Rate für verfügbare Einkommen in Abbildung 2 zeigt auf, dass das 80. Perzentil 2016 ungefähr das 6-fache vom 20. Perzentil verdiente, während es 2007 noch etwa das 7-fache war. Dieser Rückgang lässt sich jedoch bei den Primäreinkommen nicht beobachten. Auch die 80/20 Rate zeigt, dass die verfügbaren Einkommen in der EU wesentlich egalitärer verteilt sind als die Primäreinkommen. Für den Top 10% Einkommensanteil (Abbildung 3) zeigt sich eine ähnliche Entwicklung. Im Jahr 2016 verdienen die obersten 10% der Einkommensverteilung rund 25% der gesamten verfügbaren Einkommen und rund 32% der Primäreinkommen.
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="80/20 Perzentilsverhältnis, (P1)", fig.asp=0.4, , fig.pos='H'}
 
 
 p <- ggplot()
@@ -250,7 +223,7 @@ p
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Top 10% Einkommensanteil", fig.asp=0.4, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Top 10% Einkommensanteil, (P1)", fig.asp=0.4, fig.pos='H'}
 
 g <- ggplot()
 g <- g + geom_line(data = indicators.p1, aes(x=year, y=top10_eptdi, colour = "eptdi")) + xlab("") + ylab("")
@@ -261,10 +234,10 @@ g
 ```
 
 
+Gini und Theil Index (Abbildung 4) zeigen ebenso einen leichten Abwärtstrend. Für die verfügbaren Einkommen liegt der Gini im Jahr 2016 bei 33,94% und der Theil bei 20,98%, während diese Werte 2007 noch bei 35,59% bzw. 22,63% lagen.
 
 
-
-```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Gini und Theil Index", fig.asp=0.4, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Gini und Theil Index, (P1)", fig.asp=0.4, fig.pos='H'}
 
 
 p <- ggplot()
@@ -279,56 +252,13 @@ p
 ```
 
 
-Zu Beginn zeigen wir die bereits beschriebenen Indikatoren zur Erfassung der Ungleichheit über die Jahre 2004 bis 2017. Dabei ist zu beachten, dass erst ab dem Jahr 2008 alle EU –Staaten enthalten sind. In den Jahren davor ist die Ungleichheit recht hoch, was vermutlich mit der Zusammensetzung der Länder zu erklären ist. Die Indikatoren wurden dabei länderübergreifend berechnet. Bei vielen der berechneten Indikatoren fällt auf, dass die Jahre 2005 und 2006 Ausreißer sind, wir vermuten einen Zusammenhang mit der Erweiterung der SILC daten um einige Länder und deren Daten.
 
-In Graph 1 kann man einen stetigen Anstieg bei den Medianeinkommen sowie bei den mittleren Einkommen verzeichnen. In den Jahren 2006, 2009, 2013 fallen Medianeinkommen sowie die Mittleren Einkommen, in den Jahren 2009 und 2013 ist vermutlich die Finanzkriese und die darauffolgende EURO- Krise ein bedeutender Faktor. Der Median wird oft genutzt um einschätzen zu können in welchem Bereich die Mittelschicht der Gesellschaft liegt. Generell sind die Medianeinkommen niedriger als die Mittleren Einkommen. 
-
-Die 80/20 Rate zeigt auf, dass die das 80. Perzentil ungefähr das 6-fache vom 20. Perzentil verdient, dieser Wert bewegt sich im beobachteten Zeitraum in einem Rahmen von 5,311 und 9,33, wenn die die Ausreißer (2005 und 2006) außer acht gelassen werden.  
-Bei den Top 10 Prozent ist zu sehen, dass 10% der Bevölkerung ungefähr 25% des Gesamteinkommens verdienen dieser Wert ist über die Jahre leicht gesunken. 
-Wir können verzeichnen, dass sich der Gini Index nur marginal verändert hat seit 2009 liegt er bei einem Wert von 0.33. 
-
-
-```{r echo=FALSE, message=FALSE}
-
-
-
-
-
-indicators.p1 <- indicators.p1 %>% select(-contains("dii"), -contains("fii"))
-
-
-data_di <- indicators.p1 %>% select(year, contains("eptdi"))
-data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
-data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
-
-
-
-knitr::kable(data_di)
-
-```
-
+Vergleicht man die eben angeführten Indikatoren mit den Ergebnissen für die Grundgesamtheit P2 (Siehe Appendix), so zeigen sich im Wesentlichen die gleichen Entwicklungen, aber auf einem höheren Niveau der Ungleichheit. Dies lässt sich dadurch erklären, dass im Gegensatz zu P1 Ressourcen im Haushalt nur partiell geteilt werden. Somit reflektiert P1 eher die Ungleichheit zwischen den Haushalten und P2 eher jene zwischen Personen.
 
 
 
 ## Theil Index 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.4, fig.pos='H'}
-
-theil.p1 <- theil.p1 %>% select(-contains("2004"), -contains("2005"), -contains("2006"), -contains("2017"))
-
-theil.melt.c <- theil.p1 %>% select(contains("countries"))
-theil.melt.i <- theil.p1 %>% select(contains("di.ineq.share"))
-
-theil.melt.c <- melt(theil.melt.c, measure.vars =  colnames(theil.melt.c)[1:10], variable.name = "c", value.name="countries")
-theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10], variable.name = "i", value.name="ineq.share")
-
-theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
-theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
-theil.i.ts <- na.exclude(theil.i.ts)
-
-t <- ggplot(theil.i.ts, aes(x = year, y = as.numeric(ineq.share))) + geom_text(aes(label = countries)) + ylab("")
-t
-```
 
 
 In Tabelle -- vergleichen die Ergebnisse des Theil Indexes der EU-28 untereinander und betrachten dabei vor allem die Unterschiede zwischen 2010 und 2016. Der von uns Für das EU-28-Land berentete Theil beläuft sich im Jahr 2010 auf 0,201 und fällt marginal auf 0,198 im Jahr 2016. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich von 0,14 auf 0,13. 
@@ -346,16 +276,16 @@ theil.p1 <- slice(theil.p1,1:29)
 
 
 
-theil.p1 <- theil.p1 %>% select(contains("2010"), contains("2016"))
-
-theil.p1 <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
 
 
-theil_2010.p1 <- theil.p1 %>% select( contains("2010"))
-theil_2016.p1 <- theil.p1 %>% select( contains("2016"))
+theil.p1.t <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
 
 
-theil.p1 <- theil.p1 %>% select(-contains("fi."), -contains("ni."))
+theil_2010.p1 <- theil.p1.t %>% select( contains("2010"))
+theil_2016.p1 <- theil.p1.t %>% select( contains("2016"))
+
+
+
 
 
 theil_2010.p1 <- theil_2010.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
@@ -365,12 +295,40 @@ theil_2010.p1 <- theil_2010.p1 %>% mutate_at(vars(contains("theil"):contains("we
 theil_2016.p1 <- theil_2016.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
 theil_2016.p1 <- theil_2016.p1 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
 
+theil_2010.p1$countries2010 <- as.character(theil_2010.p1$countries2010)
+theil_2010.p1[30,1] <- "EU28"
 
+theil_2016.p1$countries2016 <- as.character(theil_2016.p1$countries2016)
+theil_2016.p1[30,1] <- "EU28"
 
-knitr::kable(theil_2010.p1)
-knitr::kable(theil_2016.p1)
+theil_2010.p1[30,2] <- 0.2067
+theil_2016.p1[30,2] <- 0.2039
+
+knitr::kable(theil_2010.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen (P1), 2010")
+knitr::kable(theil_2016.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen (P1), 2016")
 
 ```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.4, fig.pos='H'}
+
+
+
+theil.melt.c <- theil.p1 %>% select(contains("countries"))
+theil.melt.i <- theil.p1 %>% select(contains("di.ineq.share"))
+
+theil.melt.c <- melt(theil.melt.c, measure.vars =  colnames(theil.melt.c)[1:10], variable.name = "c", value.name="countries")
+theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10], variable.name = "i", value.name="ineq.share")
+
+theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
+theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
+theil.i.ts <- na.exclude(theil.i.ts)
+
+t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share))) + geom_line(data= indicators.p1, aes(x = as.numeric(year), y=as.numeric(theil_di_manual), colour = "theil_di")) + geom_text(aes(label = countries)) + ylab("") + xlab("")
+t
+```
+
 
 # Zusammenfassung
 
@@ -453,43 +411,40 @@ In diesem Fall werden die Einkommensaggregate so gebildet, dass persönliche Ein
 ## Appendix B: Auswertungen zu P2
 
 
-```{r echo=FALSE, message=FALSE}
-
-
-
-load("../../data/eu28_indicators.RData")
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 
 
 
-indicators.p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
+
+
+data_di_p2 <- indicators.p2 %>% select(-contains("dii"), -contains("fii"))
 
 
 
-data_di_p2 <- indicators.p2 %>% select(year, contains("ptdi"))
+data_di_p2 <- data_di_p2 %>% select(year, contains("ptdi"))
 data_di_p2 <- mutate_all(data_di_p2, function(x) as.double(as.character(x)))
 data_di_p2 <- data_di_p2 %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 
-knitr::kable(data_di_p2)
+knitr::kable(data_di_p2, caption = "Basisindikatoren, verfügbare Einkommen (P2), 2007 - 2016")
 ```
 
-```{r echo=FALSE, warning=FALSE}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
 
 
-load("../../data/eu28_indicators.RData")
 
 theil.p2 <- slice(theil.p2,1:29)
 
 
-theil.p2 <- theil.p2 %>% select(contains("2010"), contains("2016"))
-
-theil.p2 <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
 
 
-theil_2010.p2 <- theil.p2 %>% select( contains("2010"))
-theil_2016.p2 <- theil.p2 %>% select( contains("2016"))
+theil.p2.t <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
 
-theil.p2 <- theil.p2 %>% select(-contains("fi."), -contains("ni."))
+
+theil_2010.p2 <- theil.p2.t %>% select( contains("2010"))
+theil_2016.p2 <- theil.p2.t %>% select( contains("2016"))
+
+
 
 theil_2010.p2 <- theil_2010.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), function(x) as.double(as.character(x)))
 theil_2010.p2 <- theil_2010.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
@@ -499,11 +454,24 @@ theil_2016.p2 <- theil_2016.p2 %>% mutate_at(vars(contains("theil"):contains("we
 theil_2016.p2 <- theil_2016.p2 %>% mutate_at(vars(contains("theil"):contains("weight"):contains("share")), funs(round(., 4)))
 
 
-knitr::kable(theil_2010.p2)
-knitr::kable(theil_2016.p2)
+
+theil_2010.p2$countries2010 <- as.character(theil_2010.p2$countries2010)
+theil_2010.p2[30,1] <- "EU28"
+
+theil_2016.p2$countries2016 <- as.character(theil_2016.p2$countries2016)
+theil_2016.p2[30,1] <- "EU28"
+
+theil_2010.p2[30,2] <- 0.3161
+theil_2016.p2[30,2] <- 0.3081
+
+
+
+
+knitr::kable(theil_2010.p2, caption = "Theil Index Zerlegung, verfügbare Einkommen (P2), 2010")
+knitr::kable(theil_2016.p2, caption = "Theil Index Zerlegung, verfügbare Einkommen (P2), 2016")
 ```
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
 ggplot(theil.vgl) +
   geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
@@ -512,5 +480,76 @@ ggplot(theil.vgl) +
   coord_flip() 
 ```
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median, (P2)", fig.asp=0.4, fig.pos='H'}
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=mean_ptdi, colour = "ptdi", linetype = "mean")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=mean_ptni, colour = "ptni", linetype = "mean"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=mean_ptfi, colour = "ptfi", linetype = "mean"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=median_ptdi, colour = "ptdi", linetype = "median")) 
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=median_ptni, colour = "ptni", linetype = "median"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=median_ptfi, colour = "ptfi", linetype = "median"))
+
+p
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="80/20 Perzentilsverhältnis, (P2)", fig.asp=0.4, fig.pos='H'}
+
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=qsr8020_ptdi, colour = "ptdi")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=qsr8020_ptni, colour = "ptni")) 
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=qsr8020_ptfi, colour = "ptfi")) 
+p
+
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Top 10% Einkommensanteil, (P2)", fig.asp=0.4, fig.pos='H'}
+
+g <- ggplot()
+g <- g + geom_line(data = indicators.p2, aes(x=year, y=top10_ptdi, colour = "ptdi")) + xlab("") + ylab("")
+g <- g + geom_line(data = indicators.p2, aes(x=year, y=top10_ptni, colour = "ptni")) 
+g <- g + geom_line(data = indicators.p2, aes(x=year, y=top10_ptfi, colour = "ptfi"))
+g
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gini und Theil Index (P2)", fig.asp=0.4, fig.pos='H'}
+
+
+p <- ggplot()
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=gini_ptdi, colour = "ptdi", linetype = "gini")) + xlab("") + ylab("")
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=gini_ptni, colour = "ptni", linetype = "gini"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=gini_ptfi, colour = "ptfi", linetype = "gini"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=theil_ptdi, colour = "ptdi", linetype = "theil"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=theil_ptni, colour = "ptni", linetype = "theil"))
+p <- p + geom_line(data = indicators.p2, aes(x=year, y=theil_ptfi, colour = "ptfi", linetype = "theil"))
+p
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P2)", fig.asp=0.4, fig.pos='H'}
+
+
+theil.melt.c <- theil.p2 %>% select(contains("countries"))
+theil.melt.i <- theil.p2 %>% select(contains("di.ineq.share"))
+
+theil.melt.c <- melt(theil.melt.c, measure.vars =  colnames(theil.melt.c)[1:10], variable.name = "c", value.name="countries")
+theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10], variable.name = "i", value.name="ineq.share")
+
+theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
+theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
+theil.i.ts <- na.exclude(theil.i.ts)
+
+t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share))) + geom_line(data= indicators.p2, aes(x = as.numeric(year), y=as.numeric(theil_di_manual), colour = "theil_di")) + geom_text(aes(label = countries)) + ylab("") + xlab("")
+t
+
+```
 
 # References
