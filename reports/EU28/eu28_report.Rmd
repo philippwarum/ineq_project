@@ -6,6 +6,7 @@ output:
     number_sections: true
     toc_depth: 2
   bibliography: references.bib
+
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H} 
@@ -493,7 +494,7 @@ knitr::kable(theil_2010.p2)
 knitr::kable(theil_2016.p2)
 ```
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, warning=FALSE}
 theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
 ggplot(theil.vgl) +
   geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
