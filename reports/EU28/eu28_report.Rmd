@@ -2,6 +2,7 @@
 title: "Länderübergreifende Einkommensverteilung der EU"
 subtitle: "2063 - Ökonomie der Verteilung"
 author: "Isabelle Wabnegger & Philipp Warum"
+abstract: "In dieser Arbeit geben wir einen Überblick zum Stand und zur Entwicklung der länderübergreifenden Einkommensverteilung der EU im Zeitraum von 2007 bis 2016 auf Basis von EU-SILC Daten. Wir berechnen gängige Verteilungsmaße für drei unterschiedliche Einkommensvariablen und zwei Grundgesamtheiten. Darüber hinaus führen wir eine Theil Index Zerlegung durch."
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   pdf_document:
@@ -61,11 +62,10 @@ theil.p2 <- theil.p2 %>% select(-contains("2004"), -contains("2005"), -contains(
 
 # Einführung
 
-In dieser Arbeit untersuchen wir die länderübergreifende Einkommensverteilung der EU Staaten auf Basis der EU-SILC Daten über einen Zeitraum von 2004 bis 2017. Während 2004 nur 10 Länder verfügbar sind treten 2007 Bulgarien und Rumänien bei und 2013 vervollständigen sich mit der Aufnahme Kroatiens auf die EU28. 
-Im Folgenden werden wir unsere aufbereiteten Daten im Ländervergleich betrachten, da die EU-Mitglieder recht divers sind und jedes Land eigene Charakteristika auf sämtlichen Ebenen hat. Um die Verfügbaren Einkommen gut vergleichen zu können muss man in Betracht ziehen, dass die Lebenshaltungskosten in den Regionen stark variieren. Daher ist es von Notwendigkeit die Kaufkraftparitäten zu berechnen, ein Mittel, um die unterschiedlichen Kosten eines repräsentativen Warenkorbs zu ermitteln. Dabei muss darauf geachtet werden welches Preisniveau als Basis genutzt wird. In unseren Berechnungen ist das durchschnittliche EU-Preisniveau die Basis. Durch die Kaufkraftparitäten werden die Einkommen auch wechselkursbereinigt.
+In dieser Arbeit geben wir einen Überblick zum Stand und zur Entwicklung der länderübergreifenden Einkommensverteilung der EU im Zeitraum von 2007 bis 2016 auf Basis von EU-SILC Daten. Wir berechnen gängige Verteilungsmaße für drei unterschiedliche Einkommensvariablen und zwei Grundgesamtheiten. Darüber hinaus führen wir eine Theil Index Zerlegung durch.
 
 
-# Empirie
+# Literatur
 
 Der Zusammenschluss der Länder zu einem Wirtschaftsraum und einer Währungsgemeinschaft, der Europäischen Union, soll eine Annäherung auf verschiedenen Ebenen herbeiführen. Am Beispiel der Ungleichheit der Einkommen, spiegeln sich verschiedene Einflüsse wieder. 
 Ein grundlegender Faktor ist das Wirtschaftswachstum. @Fredriksen(2012)  legte hierauf den Fokus seiner Forschung. Er stellte dabei fest, dass die obere Perzentile der Einkommen bei positiver Entwicklung der Volkswirtschaft am meisten profitiert. 
@@ -79,7 +79,6 @@ Oben genannte Autoren beschäftigen sich auch mit der Frage der Einkommensvertei
 
 # Methodologie
 
-untersuchen - einkommensverteilung eu28 - silc - datenbearbeitung - verschiedene maße zur beschreibung der verteilung
 
 ## Daten
 
@@ -108,8 +107,8 @@ Schlussendlich erhalten wir national repräsentative Samples mit vergleichbaren 
 Hier soll ein kurzer theoretischer Überblick zu den verwendeten Indikatoren gegeben werden. Zunächst besprechen wir einige häufig verwendete Verteilungsmaße, während wir anschließend auf die besondere Eignung des Theil Index für die Analyse von länderübergreifenden Einkommensverteilungen eingehen.
 
 ### Median und Mittelwert 
-Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um eine erste Intension über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
-Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen, da niedrige Einkommen weniger ins Gewicht fallen. 
+Zu Beginn sind der Median und auch der Mittelwert geeignete Indikatoren, um einen erste Eindruck über die Größenverhältnisse zu bekommen. Der Median ist davon besonders aufschlussreich, er ist in anderen Worten das 0,5-Quantil und gibt den mittleren Wert der Einkommen an. 
+Der Mittelwert hingegen errechnet sich aus der Summe der Werte dividiert durch die Gesamtheit. Daher kann der Mittelwert durch wenige sehr hohe Einkommen einen hohen Wert annehmen.
 
 ### Quantile 
 Quantile können beliebig aufgeteilt werden so kann je na Zielsetzung das geeignete Quantil gewählt werden. 
@@ -259,12 +258,11 @@ Vergleicht man die eben angeführten Indikatoren mit den Ergebnissen für die Gr
 
 ## Theil Index 
 
+Zusätzlich zu den Basisindikatoren beschäftigen wir uns näher mit dem Theil Index und machen uns dabei, wie oben beschrieben, die additive Zerlegbarkeit dieses Verteilungsmaßes zu Nutze. Durch diese Eigenschaft können wir den Theil Index in zwei Komponenten zerlegen. Eine Komponente gibt dabei den Teil des Theil Indexes an, der auf die Ungleichheit innerhalb der EU Länder zurückzuführen ist. Die andere Komponente beschreibt den Teil des Theil Indexes der durch die Ungleichheit zwischen den Ländern zustande kommt. Darüber hinaus können die Anteile aller einzelnen Länder am Theil Index berechnet werden. Der Rest stellt dann die "between inequality share" dar, also jenen Anteil am Theil, der durch die Ungleichheit zwischen den Ländern zu erklären ist. Wir berechnen im ersten Schritt die Theil Indices aller Länder mit Hilfe der EU-SILC Daten. Danach berechnen wir die ökonomischen Gewichte mittels Daten zur Bevölkerungsanzahl von Eurostat und den Durchschnittseinkommen aus dem EU-SILC. Damit berechnen wir in Folge den Theil der EU28 und seine Komponenten bzw. die Ungleichheitsanteile. Wie bereits bei @beblo2001measuring und @kranzinger2018decomposition stellen wir diese Theil Index Zerlegung für die Jahre 2010 und 2016 für die verfügbaren Einkommen (P1) der EU28 in Form von Tabellen (4 & 5) dar. 
 
+Aus den Tabellen ist ersichtlich, dass der größte Teil der Ungleichheit der Einkommensverteilung der EU28 gemessen am Theil durch die Ungleichheit in jenen Ländern erklärt werden kann, die ein hohes ökonomisches Gewicht, also viele Einwohner und hohe Durchschnittseinkommen, aufweisen. Dazu zählen natürlich allen voran Deutschland, Großbritannien, Frankreich und Italien. Diese vier Länder allein machen im Beobachtungszeitraum etwa 50% des Theil Indexes aus. Aber auch die Ungleichheit zwischen den Ländern hat einen Anteil von 19,8% (2010) bzw. 17,9% (2016). Auffällig ist, dass dieser Anteil der Ungleichheit zwischen den Ländern für P2 um einiges geringer ausfällt (siehe Appendix). Dies liegt allerdings eher daran, dass die Ungleichheit in allen Ländern durch partielle Ressourcenteilung höher ausfällt und diese dadurch einen höheren Anteil an der Ungleichheit haben, während sich die Ungleichheit zwischen den Ländern, die sich im Theil durch die Durchschnittseinkommen niederschlägt, weniger stark verändert.
 
-In Tabelle -- vergleichen die Ergebnisse des Theil Indexes der EU-28 untereinander und betrachten dabei vor allem die Unterschiede zwischen 2010 und 2016. Der von uns Für das EU-28-Land berentete Theil beläuft sich im Jahr 2010 auf 0,201 und fällt marginal auf 0,198 im Jahr 2016. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich von 0,14 auf 0,13. 
-Es liegt kein konkretes Muster vor, bei einigen Ländern steigt der Theil Index, beispielsweise in Dänemark, in anderen Ländern wie der Slowakei und Belgien fällt er.
-Des Weiteren analysieren wir die Anteile der Ungleichverteilung der Länder, in unserem EU-28-Land, sowie das wirtschaftliche Gewicht der Länder. Welches sich zusätzlich am BIP orientiert, danach ist Deutschland mit 19,25 % bereits 2010 stark repräsentiert, dieses ökonomische Gewicht baut es bis 2016 auf 21,00% aus, der Anteil an der Ungleichheit liegt 2016 allerdings nur bei 16,77%.
-Es fällt auf, dass die viel größten EU Länder in Summe einen Anteil von über 50 % besitzen. 
+Allgemein fällt der Theil von 2010 auf 2016 minimal. Die Unterschiede innerhalb der Länder sind allerdings größer, so fällt der Theil in Österreich um etwa einen Prozentpunkt. Die Entwicklungen sind aber unterschiedlich, bei einigen Ländern steigt der Theil Index, besonders stark beispielsweise in Dänemark, in anderen Ländern, wie der Slowakei und Belgien, fällt er. Abbildung 5 bietet dazu einen Überblick.
 
 
 ```{r echo=FALSE, warning=FALSE}
@@ -309,9 +307,22 @@ knitr::kable(theil_2016.p1, caption = "Theil Index Zerlegung, verfügbare Einkom
 
 ```
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Länder Theil Index Entwicklung, verfügbare Einkommen (P1)", fig.asp=0.6, fig.pos='H'}
+theil.vgl <- slice(theil.p1,1:28)
+theil.vgl <- theil.vgl %>% select(countries2010, di.theil2010, di.theil2016)
+
+theil.vgl <- theil.vgl %>% mutate_at(vars(di.theil2010, di.theil2016), function(x) as.double(as.character(x)))
+ggplot(theil.vgl) +
+  geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
+  geom_point( aes(x=countries2010, y=di.theil2010, colour = "2010"), size=3 ) +
+  geom_point( aes(x=countries2010, y=di.theil2016, colour = "2016"), size=3 ) + xlab("") + ylab("")  + 
+  coord_flip() 
+```
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, , fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.4, fig.pos='H'}
+Abbildung 6 zeigt die Entwicklung der Ungleichheitsanteile am Theil im Zeitverlauf. Die Rote Linie gibt den Wert des Theil Index im jeweiligen Jahr für die länderübergreifende Verteilung der verfügbaren Einkommen der EU an, während die Länderkürzel den jeweiligen Anteil am Theil angeben. Dieser Grafik lässt sich entnehmen, dass die Ungleichheit zwischen den Ländern gesunken ist bzw. einen kleineren Anteil vom Theil Index ausmacht. Deutschland hingegen verzeichnet einen steigenden Anteil, was aber nicht an steigender Ungleichheit in Deutschland liegt (diese nimmt dem Theil Index nach ab), sondern an einem steigenden ökonomischen Gewicht. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.4, fig.pos='H'}
 
 
 
@@ -330,9 +341,9 @@ t
 ```
 
 
-# Zusammenfassung
+# Conclusio
 
-potentielle Folgen eines Brexit? UK inequality share!
+In dieser Arbeit geben wir einen Überblick zum Stand und zur Entwicklung der länderübergreifenden Einkommensverteilung der EU im Zeitraum von 2007 bis 2016 auf Basis von EU-SILC Daten. Wir berechnen gängige Verteilungsmaße für drei unterschiedliche Einkommensvariablen und zwei Grundgesamtheiten. Darüber hinaus führen wir eine Theil Index Zerlegung durch.
 
 
 # Appendix
@@ -471,14 +482,7 @@ knitr::kable(theil_2010.p2, caption = "Theil Index Zerlegung, verfügbare Einkom
 knitr::kable(theil_2016.p2, caption = "Theil Index Zerlegung, verfügbare Einkommen (P2), 2016")
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
-ggplot(theil.vgl) +
-  geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
-  geom_point( aes(x=countries2010, y=di.theil2010), color=rgb(0.2,0.7,0.1,0.5), size=3 ) +
-  geom_point( aes(x=countries2010, y=di.theil2016), color=rgb(0.7,0.2,0.1,0.5), size=3 ) +
-  coord_flip() 
-```
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median, (P2)", fig.asp=0.4, fig.pos='H'}
 
