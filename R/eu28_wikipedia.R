@@ -8,15 +8,32 @@
 library(dplyr)
 library(eurostat)
 library(reshape2)
+library(plyr)
 
 load("./data/silc_eu28.RData")
 
 # get data from EUROSTAT --------------------------------------------------
-#ilc_di12
+# get indicators on countrylevel
+
+names <- c("pov_th", "pov", "quants", "qsr", "gini", 
+           "inc", "hlth", "pov_reg")
+codes <- c("ilc_li01", "ilc_li02", "ilc_di01", "ilc_di11", "ilc_di12", 
+           "ilc_di03", "ilc_lk11", "ilc_li41")
+
+df <- ldply(data)
+
+#filter indicators
+
+gini.EU <- filter(df, indic_il =="GINI_HND", time >= "2016")
+median.EU <- filter(df, indic_il =="MED_E", time >= "2016", unit=="EUR", sex=="T", age=="TOTAL")
+S80_20.EU <- filter(df, indic_il =="S80_S20", time >="2016", sex=="T", age=="TOTAL")
+mean.EU <- filter(df, indic_il=="MEI_E", time >="2016",unit=="EUR", sex=="T", age=="TOTAL")
+
 
 
 # get data
 gini <- get_eurostat(id = "ilc_di12", time_format = "num")
+
 ginid <- dcast(gini, geo ~ time, value.var = c("values"))
 ginieu28 <- ginid %>% filter(geo %in% c(levels(as.factor(silc.p1.ppp.store$rb020[which(silc.p1.ppp.store$rb010==2016)]))))
 
