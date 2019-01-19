@@ -19,6 +19,7 @@ names <- c("pov_th", "pov", "quants", "qsr", "gini",
            "inc", "hlth", "pov_reg")
 codes <- c("ilc_li01", "ilc_li02", "ilc_di01", "ilc_di11", "ilc_di12", 
            "ilc_di03", "ilc_lk11", "ilc_li41")
+data <- lapply(codes, get_eurostat, stringsAsFactors = FALSE, time_format = "num")
 
 df <- ldply(data)
 
@@ -46,6 +47,7 @@ indicators.cl <- filter(indicators.cl, geo%in% c("AT", "BE", "BG", "CY", "CZ", "
 indicators.cl.2017 <- filter(indicators.cl, time %in% 2017)
 indicators.c1.ie <- filter(indicators.cl, geo %in% "IE")
 indicators.wiki <- bind_rows(indicators.cl.2017, indicators.c1.ie)
+write.csv(indicators.wiki, file = "indicators.wiki.csv",row.names=FALSE)
 
 
 
