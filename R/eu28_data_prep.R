@@ -8,7 +8,7 @@
 library(dplyr)
 library(eurostat)
 
-load("./data/silc_eu28.RData")
+load("./data/silc_eu28_full.RData")
 
 
 
@@ -42,7 +42,7 @@ silc.r.store$rb020[silc.r.store$rb020=="GR"] <- "EL"
 
 
 # Can we even compute meaningful statistics for the EU28? Yes, the weights adjust for the different sample sizes per country.
-table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2014])
+#table(silc.p1.ppp.store$rb020[silc.p1.ppp.store$rb010==2014])
 
 
 # income aggregation ------------------------------------------------------
@@ -66,7 +66,9 @@ silc.hdp.store <- silc.hdp.store %>% mutate(pre_tax_factor_income = py010g + py0
 silc.hdp.store <- silc.hdp.store %>% mutate(pre_tax_national_income = pre_tax_factor_income + py090g + py100g)
 
 # 3. Post-tax disposable income
-silc.hdp.store <- silc.hdp.store %>% mutate(post_tax_disposable_income = pre_tax_national_income + py110g + py120g + py130g + py140g + hy050g + hy060g + hy070g + hy080g - hy120g - hy130g - hy140g)
+silc.hdp.store <- silc.hdp.store %>% mutate(post_tax_disposable_income = pre_tax_national_income + py110g + py120g + py130g + py140g + hy050g + hy060g + hy070g + hy080g - hy120g - hy130g - hy140g, di_check = hy020 - post_tax_disposable_income)
+
+
 
 # drop HH for which hx050 == 0
 table(silc.h.store$hb020[which(silc.h.store$hx050==0)])
@@ -85,8 +87,10 @@ sum(silc.hdp.store$hy010>0 & silc.hdp.store$pre_tax_factor_income==0)
 silc.hdp.store <- silc.hdp.store %>% mutate(equivalent_pre_tax_factor_income_imputed = if_else(silc.hdp.store$hy010>0 & silc.hdp.store$pre_tax_factor_income==0, hy010/hx050, equivalent_pre_tax_factor_income), 
                                             equivalent_post_tax_disposable_income_imputed = if_else(silc.hdp.store$hy020>0 & silc.hdp.store$post_tax_disposable_income==0, hy020/hx050, equivalent_post_tax_disposable_income))
 
+silc.hdp.store <- silc.hdp.store %>% mutate(equivalent_hy020 = hy020/hx050)
+
 # merge with personal register data
-silc.rhdp.store <- left_join(silc.r.store, silc.hdp.store %>% select(id_h, hx010, db040, pre_tax_factor_income:equivalent_post_tax_disposable_income_imputed))
+silc.rhdp.store <- left_join(silc.r.store, silc.hdp.store %>% select(id_h, hx010, db040, pre_tax_factor_income:equivalent_hy020))
 
 # p1 dataset
 silc.rhdp.p1.store <- silc.rhdp.store %>% select(-rx030, -(pre_tax_factor_income:post_tax_disposable_income))
@@ -173,7 +177,8 @@ silc.pdh.p2.store <- silc.pdh.p2.store %>% mutate(px010 = if_else(pb020 %in%  c(
 silc.rhdp.p1.store <- silc.rhdp.p1.store %>% mutate(hx010 = if_else(rb020 %in%  c("CY", "EE", "LT", "LV", "SK", "SI", "MT"), 1, hx010))
 
 # calculate ppp adjusted incomes
-silc.p1.ppp.store <- silc.rhdp.p1.store %>% mutate_at(vars(equivalent_pre_tax_factor_income:equivalent_post_tax_disposable_income_imputed), funs(if_else(hx010==0, . * xr / ppp, . * hx010 / ppp)))
+silc.p1.ppp.store <- silc.rhdp.p1.store %>% mutate_at(vars(equivalent_pre_tax_factor_income:equivalent_hy020), funs(if_else(hx010==0, . * xr / ppp, . * hx010 / ppp)))
+
 rm(silc.rhdp.p1.store)
 
 silc.p2.ppp.store <- silc.pdh.p2.store %>% mutate_at(vars(pre_tax_factor_income:post_tax_disposable_income), funs(if_else(px010==0, . * xr / ppp, . * px010 / ppp)))

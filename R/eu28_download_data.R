@@ -58,4 +58,4 @@ for(r in 4:17){
 
 # save dataset --------------------------------------------
 
-save(silc.p.store, silc.h.store, silc.d.store, silc.r.store, file = "./data/silc_eu28.RData")
+save(silc.p.store, silc.h.store, silc.d.store, silc.r.store, file = "./data/silc_eu28_full.RData")
