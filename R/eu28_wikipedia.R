@@ -43,6 +43,10 @@ indicators.cl <- filter(indicators.cl, geo%in% c("AT", "BE", "BG", "CY", "CZ", "
                                                  "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
                                                  "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU28"))
 
+indicators.cl.2017 <- filter(indicators.cl, time %in% 2017)
+indicators.c1.ie <- filter(indicators.cl, geo %in% "IE")
+indicators.wiki <- bind_rows(indicators.cl.2017, indicators.c1.ie)
+
 # get data
 gini <- get_eurostat(id = "ilc_di12", time_format = "num")
 
