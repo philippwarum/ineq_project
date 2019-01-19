@@ -9,7 +9,12 @@ output:
     toc: true
     number_sections: true
     toc_depth: 2
+<<<<<<< HEAD
+  bibliography: references.bib
+
+=======
 bibliography: references.bib
+>>>>>>> 2cf30a41fdedfdbd44552c2d148255ba27130774
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H} 
@@ -482,6 +487,16 @@ knitr::kable(theil_2010.p2, caption = "Theil Index Zerlegung, verfügbare Einkom
 knitr::kable(theil_2016.p2, caption = "Theil Index Zerlegung, verfügbare Einkommen (P2), 2016")
 ```
 
+<<<<<<< HEAD
+```{r echo=FALSE, warning=FALSE}
+theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
+ggplot(theil.vgl) +
+  geom_segment( aes(x=countries2010, xend=countries2010, y=di.theil2010, yend=di.theil2016), color="grey") +
+  geom_point( aes(x=countries2010, y=di.theil2010), color=rgb(0.2,0.7,0.1,0.5), size=3 ) +
+  geom_point( aes(x=countries2010, y=di.theil2016), color=rgb(0.7,0.2,0.1,0.5), size=3 ) +
+  coord_flip() 
+```
+=======
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median, (P2)", fig.asp=0.4, fig.pos='H'}
@@ -557,3 +572,4 @@ t
 ```
 
 # References
+>>>>>>> 2cf30a41fdedfdbd44552c2d148255ba27130774

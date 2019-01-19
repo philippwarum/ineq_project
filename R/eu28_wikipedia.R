@@ -8,17 +8,50 @@
 library(dplyr)
 library(eurostat)
 library(reshape2)
+library(plyr)
 
 load("./data/silc_eu28.RData")
 
 # get data from EUROSTAT --------------------------------------------------
-#ilc_di12
+# get indicators on countrylevel
 
+names <- c("pov_th", "pov", "quants", "qsr", "gini", 
+           "inc", "hlth", "pov_reg")
+codes <- c("ilc_li01", "ilc_li02", "ilc_di01", "ilc_di11", "ilc_di12", 
+           "ilc_di03", "ilc_lk11", "ilc_li41")
+
+df <- ldply(data)
+
+#filter indicators
+
+gini.EU <- filter(df, indic_il =="GINI_HND", time >= "2016")
+median.EU <- filter(df, indic_il =="MED_E", time >= "2016", unit=="EUR", sex=="T", age=="TOTAL")
+S80_20.EU <- filter(df, indic_il =="S80_S20", time >="2016", sex=="T", age=="TOTAL")
+mean.EU <- filter(df, indic_il=="MEI_E", time >="2016",unit=="EUR", sex=="T", age=="TOTAL")
+
+
+indicators.cl <- bind_cols(gini.EU, median.EU, mean.EU, S80_20.EU)
+colnames(indicators.cl)[colnames(indicators.cl)=="values"] <- "gini"
+colnames(indicators.cl)[colnames(indicators.cl)=="values1"] <- "median" 
+colnames(indicators.cl)[colnames(indicators.cl)=="values2"] <- "mean"
+colnames(indicators.cl)[colnames(indicators.cl)=="values3"] <- "S80_20"
+
+indicators.cl <- select(indicators.cl, geo, time, gini, median, mean, S80_20)
+
+indicators.cl <- filter(indicators.cl, geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                                 "EE", "EL", "ES","FI", "FR", "HR", 
+                                                 "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                                 "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU28"))
+
+indicators.cl.2017 <- filter(indicators.cl, time %in% 2017)
+indicators.c1.ie <- filter(indicators.cl, geo %in% "IE")
+indicators.wiki <- bind_rows(indicators.cl.2017, indicators.c1.ie)
 
 
 
 # get data
 gini <- get_eurostat(id = "ilc_di12", time_format = "num")
+
 ginid <- dcast(gini, geo ~ time, value.var = c("values"))
 ginieu28 <- ginid %>% filter(geo %in% c(levels(as.factor(silc.p1.ppp.store$rb020[which(silc.p1.ppp.store$rb010==2016)]))))
 

@@ -13,7 +13,6 @@ load("./data/silc_eu28.RData")
 
 
 
-
 rm(silc.d.store, silc.h.store, silc.p.store, silc.r.store)
 
 
@@ -272,9 +271,10 @@ for(year in 2004:2017){
     theil[country,11+(year-2004)*13,1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]&equivalent_post_tax_disposable_income>0))
     # country econ weight
     theil[country,12+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    
+    
     }
-  theil[country+1,1+(year-2004)*13,1] <- "between"
-  
+
   
   # first theil loop p2
   
@@ -284,7 +284,6 @@ for(year in 2004:2017){
     
     # country
     theil[country,1+(year-2004)*13,2] <- levels(as.factor(silc.p2.y$pb020))[country]
-    
     # country theil
     theil[country,2+(year-2004)*13,2] <- svygei(~pre_tax_factor_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&pre_tax_factor_income > 0), epsilon = 1)
     # country mean
@@ -309,8 +308,10 @@ for(year in 2004:2017){
     theil[country,11+(year-2004)*13,2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&post_tax_disposable_income>0))
     # country econ weight
     theil[country,12+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    
+    
   }
-  theil[country+1,1+(year-2004)*13,2] <- "between"
+  
  
 
   # calculate Theil manually
@@ -353,15 +354,9 @@ for(year in 2004:2017){
     theil[country,9+(year-2004)*13,1] <- (as.numeric(theil[country,8+(year-2004)*13,1])*as.numeric(theil[country,6+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 33, 1])
     
     theil[country,13+(year-2004)*13,1] <- (as.numeric(theil[country,12+(year-2004)*13,1])*as.numeric(theil[country,10+(year-2004)*13,1]))/as.numeric(indicators[year-2003, 34, 1])
+    
   }
-  #between shares
-  theil[country+1,5+(year-2004)*13,1] <- as.numeric(indicators[year-2003, 40, 1]) / as.numeric(indicators[year-2003, 32, 1])
-  
-  theil[country+1,9+(year-2004)*13,1] <- as.numeric(indicators[year-2003, 41, 1]) / as.numeric(indicators[year-2003, 33, 1])
-  
-  theil[country+1,13+(year-2004)*13,1] <- as.numeric(indicators[year-2003, 42, 1])/ as.numeric(indicators[year-2003, 34, 1])
-  
-  
+
   
   # 2nd theil loop p2 - calculate ineq shares
   
@@ -373,13 +368,10 @@ for(year in 2004:2017){
     theil[country,9+(year-2004)*13,2] <- (as.numeric(theil[country,8+(year-2004)*13,2])*as.numeric(theil[country,6+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 33, 2])
     
     theil[country,13+(year-2004)*13,2] <- (as.numeric(theil[country,12+(year-2004)*13,2])*as.numeric(theil[country,10+(year-2004)*13,2]))/as.numeric(indicators[year-2003, 34, 2])
+    
   }
-  #between shares
-  theil[country+1,5+(year-2004)*13,2] <- as.numeric(indicators[year-2003, 40, 2]) / as.numeric(indicators[year-2003, 32, 2])
   
-  theil[country+1,9+(year-2004)*13,2] <- as.numeric(indicators[year-2003, 41, 2]) / as.numeric(indicators[year-2003, 33, 2])
-  
-  theil[country+1,13+(year-2004)*13,2] <- as.numeric(indicators[year-2003, 42, 2])/ as.numeric(indicators[year-2003, 34, 2])
+  # 
   
   
 }
@@ -409,8 +401,6 @@ indicators.p2 <- indicators.p2 %>% mutate(theil_between_share_fi = as.numeric(as
 
 indicators.p1 <- indicators.p1 %>% select(-(V43:V50))
 indicators.p2 <- indicators.p2 %>% select(-(V43:V50))
-
-
 
 # check proportions -------------------------------------------------------
 # 
