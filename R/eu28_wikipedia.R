@@ -9,6 +9,7 @@ library(dplyr)
 library(eurostat)
 library(reshape2)
 library(plyr)
+library(ggplot2)
 
 load("./data/silc_eu28.RData")
 
@@ -25,6 +26,7 @@ df <- ldply(data)
 
 #filter indicators
 
+ginigraph_data <- df %>% filter(indic_il %in% "GINI_HND" & time %in% c("2008","2016"))
 gini.EU <- filter(df, indic_il =="GINI_HND", time >= "2016")
 median.EU <- filter(df, indic_il =="MED_E", time >= "2016", unit=="EUR", sex=="T", age=="TOTAL")
 S80_20.EU <- filter(df, indic_il =="S80_S20", time >="2016", sex=="T", age=="TOTAL")
@@ -48,6 +50,36 @@ indicators.cl.2017 <- filter(indicators.cl, time %in% 2017)
 indicators.c1.ie <- filter(indicators.cl, geo %in% "IE")
 indicators.wiki <- bind_rows(indicators.cl.2017, indicators.c1.ie)
 write.csv(indicators.wiki, file = "indicators.wiki.csv",row.names=FALSE)
+
+
+# gini time development graph ---------------------------------------------
+
+ginigraph_data <- ginigraph_data %>% select(geo, time, values)
+
+ginigraph_data <- ginigraph_data %>% filter(geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                                 "EE", "EL", "ES","FI", "FR", "HR", 
+                                                 "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                                 "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU27"))
+
+gini_cro2010 <- df %>% filter(indic_il %in% "GINI_HND" & time %in% c("2010") & geo %in% "HR")
+gini_cro2010 <- gini_cro2010 %>% select(geo, time, values)
+ginigraph_data <- rbind(ginigraph_data, gini_cro2010)
+ginigraph_data <- ginigraph_data %>% group_by(time) %>% arrange(geo)
+ginigraph_data8 <- ginigraph_data %>% filter(time %in% c("2008","2010"))
+ginigraph_data16 <- ginigraph_data %>% filter(time %in% c("2016"))
+ginigraph_data <- left_join(ginigraph_data8, ginigraph_data16, by = "geo")
+
+gini_eu <- ginigraph_data %>% filter(geo %in% "EU27")
+ginigraph_data <- ginigraph_data %>% filter(geo!="EU27")
+ginigraph_data <- rbind(gini_eu, ginigraph_data)
+ginigraph_data$geo <- factor(ginigraph_data$geo, levels = unique(ginigraph_data$geo))
+
+p <- ggplot(ginigraph_data) +
+  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.2, "inches"), ends = "last", type = "open")) +
+  xlab("") + ylab("")  + scale_y_continuous(breaks = pretty(ginigraph_data$values.x, n=15))
+
+p
+# checking eurostat calculations ------------------------------------------
 
 
 
