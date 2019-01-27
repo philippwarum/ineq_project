@@ -10,6 +10,7 @@ library(eurostat)
 library(reshape2)
 library(plyr)
 library(ggplot2)
+library(svglite)
 
 load("./data/silc_eu28.RData")
 
@@ -26,7 +27,8 @@ df <- ldply(data)
 
 #filter indicators
 
-ginigraph_data <- df %>% filter(indic_il %in% "GINI_HND" & time %in% c("2008","2016"))
+ginigraph_data <- df %>% filter(indic_il %in% "GINI_HND" & time %in% c("2008","2017"))
+s8020graph_data <- df %>% filter(indic_il %in% "S80_S20" & time %in% c("2008", "2017") & sex%in%"T" & age %in% "TOTAL")
 gini.EU <- filter(df, indic_il =="GINI_HND", time >= "2016")
 median.EU <- filter(df, indic_il =="MED_E", time >= "2016", unit=="EUR", sex=="T", age=="TOTAL")
 S80_20.EU <- filter(df, indic_il =="S80_S20", time >="2016", sex=="T", age=="TOTAL")
@@ -46,11 +48,13 @@ indicators.cl <- filter(indicators.cl, geo%in% c("AT", "BE", "BG", "CY", "CZ", "
                                                  "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
                                                  "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU28"))
 
-indicators.cl.2017 <- filter(indicators.cl, time %in% 2017)
-indicators.c1.ie <- filter(indicators.cl, geo %in% "IE")
-indicators.wiki <- bind_rows(indicators.cl.2017, indicators.c1.ie)
-write.csv(indicators.wiki, file = "indicators.wiki.csv",row.names=FALSE)
+indicators.wiki <- filter(indicators.cl, time %in% 2017)
 
+indicators.eu <- indicators.wiki %>% filter(geo %in% "EU28")
+indicators.wiki <- indicators.wiki %>% filter(geo!="EU28")
+indicators.wiki <- rbind(indicators.eu, indicators.wiki)
+
+write.csv2(indicators.wiki, file = "indicators.wiki.csv",row.names=FALSE)
 
 # gini time development graph ---------------------------------------------
 
@@ -66,19 +70,59 @@ gini_cro2010 <- gini_cro2010 %>% select(geo, time, values)
 ginigraph_data <- rbind(ginigraph_data, gini_cro2010)
 ginigraph_data <- ginigraph_data %>% group_by(time) %>% arrange(geo)
 ginigraph_data8 <- ginigraph_data %>% filter(time %in% c("2008","2010"))
-ginigraph_data16 <- ginigraph_data %>% filter(time %in% c("2016"))
+ginigraph_data16 <- ginigraph_data %>% filter(time %in% c("2017"))
 ginigraph_data <- left_join(ginigraph_data8, ginigraph_data16, by = "geo")
 
 gini_eu <- ginigraph_data %>% filter(geo %in% "EU27")
 ginigraph_data <- ginigraph_data %>% filter(geo!="EU27")
 ginigraph_data <- rbind(gini_eu, ginigraph_data)
+ginigraph_data$geo[ginigraph_data$geo=="EU27"] <- "EU"
 ginigraph_data$geo <- factor(ginigraph_data$geo, levels = unique(ginigraph_data$geo))
+
 
 p <- ggplot(ginigraph_data) +
   geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.2, "inches"), ends = "last", type = "open")) +
-  xlab("") + ylab("")  + scale_y_continuous(breaks = pretty(ginigraph_data$values.x, n=15))
+  xlab("") + ylab("Gini Koeffizient (0-100)\n")  + scale_y_continuous(breaks = pretty(ginigraph_data$values.y, n=15)) + labs(title="Entwicklung des Gini Koeffizienten, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
 
 p
+
+ggsave(file='graphs/EU_gini.svg',height=4,width=7)
+
+
+# s8020 time development graph --------------------------------------------
+
+
+s8020graph_data <- s8020graph_data %>% select(geo, time, values)
+
+s8020graph_data <- s8020graph_data %>% filter(geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                                      "EE", "EL", "ES","FI", "FR", "HR", 
+                                                      "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                                      "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU27"))
+
+s8020_cro2010 <- df %>% filter(time %in% c("2010") & geo %in% "HR" & indic_il %in% "S80_S20"  & sex%in%"T" & age %in% "TOTAL")
+s8020_cro2010 <- s8020_cro2010 %>% select(geo, time, values)
+s8020graph_data <- rbind(s8020graph_data, s8020_cro2010)
+s8020graph_data <- s8020graph_data %>% group_by(time) %>% arrange(geo)
+s8020graph_data8 <- s8020graph_data %>% filter(time %in% c("2008","2010"))
+s8020graph_data16 <- s8020graph_data %>% filter(time %in% c("2017"))
+s8020graph_data <- left_join(s8020graph_data8, s8020graph_data16, by = "geo")
+
+s8020_eu <- s8020graph_data %>% filter(geo %in% "EU27")
+s8020graph_data <- s8020graph_data %>% filter(geo!="EU27")
+s8020graph_data <- rbind(s8020_eu, s8020graph_data)
+s8020graph_data$geo[s8020graph_data$geo=="EU27"] <- "EU"
+s8020graph_data$geo <- factor(s8020graph_data$geo, levels = unique(s8020graph_data$geo))
+
+
+p <- ggplot(s8020graph_data) +
+  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.2, "inches"), ends = "last", type = "open")) +
+  xlab("") + ylab("S80/S20 Verhältnis\n")  + scale_y_continuous(breaks = pretty(s8020graph_data$values.y, n=15)) + labs(title="Entwicklung des S80/S20 Verhältnis, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
+p
+
+ggsave(file='graphs/EU_s8020.svg',height=4,width=7)
+
+
+
 # checking eurostat calculations ------------------------------------------
 
 
