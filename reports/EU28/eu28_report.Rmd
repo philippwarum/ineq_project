@@ -206,7 +206,7 @@ data_di <- mutate_all(data_di, function(x) as.double(as.character(x)))
 data_di <- data_di %>% mutate_at(vars(starts_with("qsr"):starts_with("theil")), funs(round(., 4)))
 colnames(data_di) <- c("Jahr", "Mittelwert", "Median", "80/20 Quantile Share Ratio", "Top 10% Anteil", "Gini", "Theil")
 
-knitr::kable(data_di, caption = "Basisindikatoren, verfügbare Einkommen (P1), 2007 - 2016")
+knitr::kable(data_di, caption = "Basisindikatoren, verfügbare Einkommen der EU (P1), 2007 - 2016")
 
 ```
 
@@ -328,8 +328,8 @@ colnames(theil_2010.p1) <- c("Länder", "Theil 2010", "Theil 2016", "Economic We
 colnames(theil_2016.p1) <- c("Länder", "Theil 2010", "Theil 2016", "Economic Weight", "Inequality Share")
 
 
-knitr::kable(theil_2010.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen (P1), 2010")
-knitr::kable(theil_2016.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen (P1), 2016")
+knitr::kable(theil_2010.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen der EU28 (P1), 2010")
+knitr::kable(theil_2016.p1, caption = "Theil Index Zerlegung, verfügbare Einkommen der EU28 (P1), 2016")
 
 ```
 
