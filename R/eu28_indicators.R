@@ -263,14 +263,14 @@ for(year in 2004:2017){
     # country mean
     theil[country,7+(year-2004)*13,1] <- svymean(~equivalent_pre_tax_national_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]& equivalent_pre_tax_national_income > 0))
     # country econ weight
-    theil[country,8+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    theil[country,8+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,7+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
     
     # country theil
     theil[country,10+(year-2004)*13,1] <- svygei(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]&equivalent_post_tax_disposable_income>0), epsilon = 1)
     # country mean
     theil[country,11+(year-2004)*13,1] <- svymean(~equivalent_post_tax_disposable_income, subset(silc.p1.svy, rb020==levels(as.factor(silc.p1.y$rb020))[country]&equivalent_post_tax_disposable_income>0))
     # country econ weight
-    theil[country,12+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
+    theil[country,12+(year-2004)*13,1] <- (pop_c*as.numeric(theil[country,11+(year-2004)*13,1]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 1]))
     
     
     }
@@ -300,14 +300,14 @@ for(year in 2004:2017){
     # country mean
     theil[country,7+(year-2004)*13,2] <- svymean(~pre_tax_national_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]& pre_tax_national_income > 0))
     # country econ weight
-    theil[country,8+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    theil[country,8+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,7+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
     
     # country theil
     theil[country,10+(year-2004)*13,2] <- svygei(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&post_tax_disposable_income>0), epsilon = 1)
     # country mean
     theil[country,11+(year-2004)*13,2] <- svymean(~post_tax_disposable_income, subset(silc.p2.svy, pb020==levels(as.factor(silc.p2.y$pb020))[country]&post_tax_disposable_income>0))
     # country econ weight
-    theil[country,12+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,3+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
+    theil[country,12+(year-2004)*13,2] <- (pop_c*as.numeric(theil[country,11+(year-2004)*13,2]))/(as.numeric(pop_sum)*as.numeric(indicators[year-2003, 2, 2]))
     
     
   }
