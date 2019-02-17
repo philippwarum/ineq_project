@@ -97,7 +97,7 @@ EU-SILC Daten werden jährlich, sowohl auf Haushalts- als auch auf Personenebene
 
 Da Einkommen sowohl auf Haushalts- als auch auf Personenebene entstehen, wird zur Berechnung von Individualeinkommen eine Konvention benötigt, die festlegt wie die unterschiedlichen Haushaltseinkommen den Personen zugeteilt werden. Aus diesem Grund bilden wir zwei Grundgesamtheiten (P1 und P2), bei welchen diese Zuordnung auf unterschiedliche Weise funktioniert. Im Fall von P1 werden sämtliche Einkommen die in einem Haushalt anfallen (inkl. Einkommen auf Personenebene) summiert, durch einen Äquivalenzfaktor dividiert und anschließend allen Personen in einem Haushalt (auch Kindern) zugeteilt. Der Äquivalenzfaktor berücksichtigt dabei den Umstand, dass in Mehrpersonenhaushalten manche Kosten durch Ressourcenteilung pro Person geringer ausfallen (Waschmaschine, Kühlschrank, etc.) und das verfügbare Einkommen somit höher ist. Bei der Grundgesamtheit P1 wird also davon ausgegangen, dass sämtliche Einkommen eines Haushalts zu gleichen Teilen unter den Bewohnern aufgeteilt werden. Demgegenüber bleiben persönliche Einkommen bei der Grundgesamtheit P2 den jeweiligen Personen vorbehalten, während Einkommen auf Haushaltsebene gleichermaßen auf die Bewohner älter als 19 Jahre aufgeteilt werden, während Personen unter 20 aus den Berechnungen ausgeschlossen werden. Im Fall von P2 werden Ressourcen im Haushalt also nur partiell geteilt.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28, Primäreinkommen (P1)", fig.asp=0.55, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28 (2016), Primäreinkommen (P1)", fig.asp=0.55, fig.pos='H'}
 
 load("../../data/sample_distribution.RData")
 
@@ -110,12 +110,12 @@ df$rb020 <- factor(df$rb020, levels = unique(df$rb020))
 
 
 
-p <- ggplot(df, aes(x=equivalent_pre_tax_factor_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%")) + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)") + guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"))
+p <- ggplot(df, aes(x=equivalent_pre_tax_factor_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%")) + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)") + guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"), axis.title = element_text(size = rel(0.8)))
 p
 ```
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28, verfügbare Einkommen (P1)", fig.asp=0.55, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28 (2016), verfügbare Einkommen (P1)", fig.asp=0.55, fig.pos='H'}
 #load data
 #df <- df %>% filter(equivalent_post_tax_disposable_income < 90000 & equivalent_post_tax_disposable_income > -2500)
 
@@ -127,7 +127,7 @@ df$equivalent_post_tax_disposable_income <- ifelse(df$equivalent_post_tax_dispos
 df$equivalent_post_tax_disposable_income <- ifelse(df$equivalent_post_tax_disposable_income<=(960.7657), 960.7657, df$equivalent_post_tax_disposable_income)
 df$rb020 <- factor(df$rb020, levels = unique(df$rb020))
 
-p <- ggplot(df, aes(x=equivalent_post_tax_disposable_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%"))  + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)")+ guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"))
+p <- ggplot(df, aes(x=equivalent_post_tax_disposable_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%"))  + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)")+ guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"), axis.title = element_text(size = rel(0.8)))
 p
 ```
 
@@ -358,7 +358,7 @@ ggplot(theil.vgl) +
 
 Abbildung 6 zeigt die Entwicklung der Ungleichheitsanteile am Theil im Zeitverlauf. Die Rote Linie gibt den Wert des Theil Index im jeweiligen Jahr für die länderübergreifende Verteilung der verfügbaren Einkommen der EU an, während die Länderkürzel den jeweiligen Anteil am Theil angeben. Dieser Grafik lässt sich entnehmen, dass die Ungleichheit zwischen den Ländern gesunken ist bzw. einen kleineren Anteil vom Theil Index ausmacht. Deutschland hingegen verzeichnet einen steigenden Anteil, was aber nicht an steigender Ungleichheit in Deutschland liegt (diese nimmt dem Theil Index nach ab), sondern an einem steigenden ökonomischen Gewicht. 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.4, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P1)", fig.asp=0.55, fig.pos='H'}
 
 
 
@@ -371,9 +371,18 @@ theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10],
 theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
 theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
 theil.i.ts <- na.exclude(theil.i.ts)
+avgshare <- theil.i.ts %>% group_by(countries) %>% summarise(cmean = mean(as.numeric(ineq.share)))
+theil.i.ts <- left_join(theil.i.ts, avgshare, by="countries")
+theil.i.ts <- theil.i.ts %>% arrange(year, desc(cmean))
+theil.i.ts$countries <- factor(theil.i.ts$countries, levels = unique(theil.i.ts$countries))
 
-t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share))) + geom_line(data= indicators.p1, aes(x = as.numeric(year), y=as.numeric(theil_di_manual), colour = "theil_di")) + geom_text(aes(label = countries)) + ylab("") + xlab("")
+
+t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share), fill = countries)) + geom_area() + ylab("") + xlab("")+ scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28))+ scale_y_continuous(labels = function(x) paste0(x*100, "%")) + labs(y = "Anteil am Theil (EU27/28)", x = "") + guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"), axis.title = element_text(size = rel(0.8)))
 t
+
+# t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share))) + geom_line(data= indicators.p1, aes(x = as.numeric(year), y=as.numeric(theil_di_manual), colour = "theil_di")) + geom_text(aes(label = countries)) + ylab("") + xlab("")
+# t
+
 ```
 
 
@@ -584,7 +593,7 @@ p
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P2)", fig.asp=0.4, fig.pos='H'}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P2)", fig.asp=0.55, fig.pos='H'}
 
 
 theil.melt.c <- theil.p2 %>% select(contains("countries"))
@@ -596,8 +605,12 @@ theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10],
 theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
 theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
 theil.i.ts <- na.exclude(theil.i.ts)
+avgshare <- theil.i.ts %>% group_by(countries) %>% summarise(cmean = mean(as.numeric(ineq.share)))
+theil.i.ts <- left_join(theil.i.ts, avgshare, by="countries")
+theil.i.ts <- theil.i.ts %>% arrange(year, desc(cmean))
+theil.i.ts$countries <- factor(theil.i.ts$countries, levels = unique(theil.i.ts$countries))
 
-t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share))) + geom_line(data= indicators.p2, aes(x = as.numeric(year), y=as.numeric(theil_di_manual), colour = "theil_di")) + geom_text(aes(label = countries)) + ylab("") + xlab("")
+t <- ggplot(theil.i.ts, aes(x = as.numeric(year), y = as.numeric(ineq.share), fill = countries)) + geom_area() + ylab("") + xlab("")+ scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28))+ scale_y_continuous(labels = function(x) paste0(x*100, "%")) + labs(y = "Anteil am Theil (EU27/28)", x = "") + guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"), axis.title = element_text(size = rel(0.8)))
 t
 
 ```
