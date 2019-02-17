@@ -9,12 +9,9 @@ output:
     toc: true
     number_sections: true
     toc_depth: 2
-<<<<<<< HEAD
-  bibliography: references.bib
 
-=======
 bibliography: references.bib
->>>>>>> 2cf30a41fdedfdbd44552c2d148255ba27130774
+
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H} 
@@ -487,7 +484,7 @@ knitr::kable(theil_2010.p2, caption = "Theil Index Zerlegung, verfügbare Einkom
 knitr::kable(theil_2016.p2, caption = "Theil Index Zerlegung, verfügbare Einkommen (P2), 2016")
 ```
 
-<<<<<<< HEAD
+
 ```{r echo=FALSE, warning=FALSE}
 theil.vgl <- theil.p1 %>% select(contains("countries"), contains("theil"),-contains("countries.2016"))
 ggplot(theil.vgl) +
@@ -496,7 +493,7 @@ ggplot(theil.vgl) +
   geom_point( aes(x=countries2010, y=di.theil2016), color=rgb(0.7,0.2,0.1,0.5), size=3 ) +
   coord_flip() 
 ```
-=======
+
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Mittelwert und Median, (P2)", fig.asp=0.4, fig.pos='H'}
@@ -571,5 +568,24 @@ t
 
 ```
 
+
+```{r include=FALSE, warning=FALSE}
+#load data
+
+density(df$equivalent_post_tax_disposable_income)
+#df <- df %>% filter(equivalent_post_tax_disposable_income < 90000 & equivalent_post_tax_disposable_income > -2500)
+
+load("../../data/sample_distribution.RData")
+p <- ggplot(df, aes(x=equivalent_post_tax_disposable_income, fill=rb020)) + geom_area(stat = "bin") + stat_bin(bins=5000) + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + xlim(-5000,90000)
+p
+```
+
+```{r include=FALSE, warning=FALSE}
+
+
+p <- ggplot(df, aes(x=equivalent_pre_tax_factor_income, fill=rb020)) + geom_area(stat = "bin") + stat_bin(bins=5000) + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + xlim(-5000,90000)
+p
+```
+
 # References
->>>>>>> 2cf30a41fdedfdbd44552c2d148255ba27130774
+
