@@ -374,6 +374,7 @@ theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10],
 theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
 theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
 theil.i.ts <- na.exclude(theil.i.ts)
+theil.i.ts <- theil.i.ts %>% filter(countries != "between")
 avgshare <- theil.i.ts %>% group_by(countries) %>% summarise(cmean = mean(as.numeric(ineq.share)))
 theil.i.ts <- left_join(theil.i.ts, avgshare, by="countries")
 theil.i.ts <- theil.i.ts %>% arrange(year, desc(cmean))
@@ -599,6 +600,7 @@ p
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Theil Index Inequality Shares der verfügbaren Einkommen (P2)", fig.asp=0.55, fig.pos='H'}
 
 
+
 theil.melt.c <- theil.p2 %>% select(contains("countries"))
 theil.melt.i <- theil.p2 %>% select(contains("di.ineq.share"))
 
@@ -608,6 +610,7 @@ theil.melt.i <- melt(theil.melt.i, measure.vars =  colnames(theil.melt.i)[1:10],
 theil.i.ts <- cbind(theil.melt.c, theil.melt.i)
 theil.i.ts <- theil.i.ts %>% mutate(year = str_sub(i, start = -4))
 theil.i.ts <- na.exclude(theil.i.ts)
+theil.i.ts <- theil.i.ts %>% filter(countries != "between")
 avgshare <- theil.i.ts %>% group_by(countries) %>% summarise(cmean = mean(as.numeric(ineq.share)))
 theil.i.ts <- left_join(theil.i.ts, avgshare, by="countries")
 theil.i.ts <- theil.i.ts %>% arrange(year, desc(cmean))
