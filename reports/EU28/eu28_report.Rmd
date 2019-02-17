@@ -97,6 +97,40 @@ EU-SILC Daten werden jährlich, sowohl auf Haushalts- als auch auf Personenebene
 
 Da Einkommen sowohl auf Haushalts- als auch auf Personenebene entstehen, wird zur Berechnung von Individualeinkommen eine Konvention benötigt, die festlegt wie die unterschiedlichen Haushaltseinkommen den Personen zugeteilt werden. Aus diesem Grund bilden wir zwei Grundgesamtheiten (P1 und P2), bei welchen diese Zuordnung auf unterschiedliche Weise funktioniert. Im Fall von P1 werden sämtliche Einkommen die in einem Haushalt anfallen (inkl. Einkommen auf Personenebene) summiert, durch einen Äquivalenzfaktor dividiert und anschließend allen Personen in einem Haushalt (auch Kindern) zugeteilt. Der Äquivalenzfaktor berücksichtigt dabei den Umstand, dass in Mehrpersonenhaushalten manche Kosten durch Ressourcenteilung pro Person geringer ausfallen (Waschmaschine, Kühlschrank, etc.) und das verfügbare Einkommen somit höher ist. Bei der Grundgesamtheit P1 wird also davon ausgegangen, dass sämtliche Einkommen eines Haushalts zu gleichen Teilen unter den Bewohnern aufgeteilt werden. Demgegenüber bleiben persönliche Einkommen bei der Grundgesamtheit P2 den jeweiligen Personen vorbehalten, während Einkommen auf Haushaltsebene gleichermaßen auf die Bewohner älter als 19 Jahre aufgeteilt werden, während Personen unter 20 aus den Berechnungen ausgeschlossen werden. Im Fall von P2 werden Ressourcen im Haushalt also nur partiell geteilt.
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28, Primäreinkommen (P1)", fig.asp=0.55, fig.pos='H'}
+
+load("../../data/sample_distribution.RData")
+
+cmean <- df %>% group_by(rb020) %>% summarise(cmean_eptdi = sum(equivalent_post_tax_disposable_income), cmean_eptfi = sum(equivalent_pre_tax_factor_income))
+df <- left_join(df, cmean, by = "rb020")
+df <- arrange(df, desc(cmean_eptfi))
+df$equivalent_pre_tax_factor_income <- ifelse(df$equivalent_pre_tax_factor_income>=90373.39 , 90373.39  , df$equivalent_pre_tax_factor_income)
+df$equivalent_pre_tax_factor_income <- ifelse(df$equivalent_pre_tax_factor_income<(0) , 0, df$equivalent_pre_tax_factor_income)
+df$rb020 <- factor(df$rb020, levels = unique(df$rb020))
+
+
+
+p <- ggplot(df, aes(x=equivalent_pre_tax_factor_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%")) + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)") + guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"))
+p
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Gemeinsame Einkommensverteilung der EU28, verfügbare Einkommen (P1)", fig.asp=0.55, fig.pos='H'}
+#load data
+#df <- df %>% filter(equivalent_post_tax_disposable_income < 90000 & equivalent_post_tax_disposable_income > -2500)
+
+load("../../data/sample_distribution.RData")
+cmean <- df %>% group_by(rb020) %>% summarise(cmean_eptdi = sum(equivalent_post_tax_disposable_income), cmean_eptfi = sum(equivalent_pre_tax_factor_income))
+df <- left_join(df, cmean, by = "rb020")
+df <- arrange(df, desc(cmean_eptdi))
+df$equivalent_post_tax_disposable_income <- ifelse(df$equivalent_post_tax_disposable_income>=63202.19, 63202.19, df$equivalent_post_tax_disposable_income)
+df$equivalent_post_tax_disposable_income <- ifelse(df$equivalent_post_tax_disposable_income<=(960.7657), 960.7657, df$equivalent_post_tax_disposable_income)
+df$rb020 <- factor(df$rb020, levels = unique(df$rb020))
+
+p <- ggplot(df, aes(x=equivalent_post_tax_disposable_income, y=..count../nrow(df), fill=rb020)) + geom_histogram(binwidth = 1000,stat = "bin") + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + scale_y_continuous(labels = function(x) paste0(x*100, "%"))  + labs(y = "Bevölkerungsanteil", x = "Jahreseinkommen, in Euro (kaufkraftbereinigt)")+ guides(fill=guide_legend(title="Länder")) +theme(legend.key.size =  unit(0.15, "in"))
+p
+```
+
 Nach der Berechnung der Einkommensvariablen für alle Grundgesamtheiten, Länder und Jahre, müssen die Daten noch weiter verarbeitet werden, um die Konstruktion von länderübergreifenden Einkommensverteilungen zu ermöglichen. Zunächst werden die Einkommensdaten sämtlicher Länder im EU-SILC bereits in Euro angegeben. Um diese vergleichbar zu machen, muss aber ebenso berücksichtigt werden, dass sich die Preisniveaus zwischen den Ländern unterscheiden und ein Euro somit je nach Land unterschiedlich viel wert ist. Dazu bereinigen wir die Einkommensvariablen um Kaufkraftparitäten, welche wir von Eurostat beziehen.[^5]
 
 [^5]: Hierbei ist zu beachten, dass Eurostat Euroländer so behandelt, als wäre ihre Landeswährung auch vor dem Beitritt zur Eurozone der Euro gewesen. Deshalb darf für Länder die erst im Beobachtungszeitraum dem Euro beigetreten sind (CY, EE, LT, LV, SK, SI, MT) zur Kaufkraftbereinigung selbst vor dem Beitritt keine Währungsumrechnung erfolgen, da sich die Kaufkraftparitäten bereits auf den Euro als Landeswährung beziehen. Siehe z.B. https://ec.europa.eu/eurostat/cache/metadata/FR/nama10_esms.htm
@@ -569,23 +603,7 @@ t
 ```
 
 
-```{r include=FALSE, warning=FALSE}
-#load data
 
-density(df$equivalent_post_tax_disposable_income)
-#df <- df %>% filter(equivalent_post_tax_disposable_income < 90000 & equivalent_post_tax_disposable_income > -2500)
-
-load("../../data/sample_distribution.RData")
-p <- ggplot(df, aes(x=equivalent_post_tax_disposable_income, fill=rb020)) + geom_area(stat = "bin") + stat_bin(bins=5000) + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + xlim(-5000,90000)
-p
-```
-
-```{r include=FALSE, warning=FALSE}
-
-
-p <- ggplot(df, aes(x=equivalent_pre_tax_factor_income, fill=rb020)) + geom_area(stat = "bin") + stat_bin(bins=5000) + scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Paired"))(28)) + xlim(-5000,90000)
-p
-```
 
 # References
 
