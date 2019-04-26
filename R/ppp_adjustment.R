@@ -19,12 +19,11 @@ source("R/_setup.R")
 
 # Eurostat ----------------------------------------------------------------
 
-ppp <- get_eurostat(id = "prc_ppp_ind")
+ppp <- get_eurostat(id = "prc_ppp_ind", time_format = "num")
 
 # Filter relevant values
 ppp <- ppp %>% filter(aggreg == "A01" &
-                        na_item == "PPP_EU28" & 
-                        time == "2013-01-01")
+                        na_item == "PPP_EU28")
 
 # Merge the data
 ppp.pd <- left_join(silc.pd, ppp, by = c("pb020" = "geo"))

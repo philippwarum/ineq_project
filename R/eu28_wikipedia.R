@@ -12,14 +12,14 @@ library(plyr)
 library(ggplot2)
 library(svglite)
 
-load("./data/silc_eu28.RData")
+#load("./data/silc_eu28.RData")
 
 # get data from EUROSTAT --------------------------------------------------
 # get indicators on countrylevel
 
 names <- c("pov_th", "pov", "quants", "qsr", "gini", 
            "inc", "hlth", "pov_reg")
-codes <- c("ilc_li01", "ilc_li02", "ilc_di01", "ilc_di11", "ilc_di12", 
+codes <- c("ilc_li01", "ilc_li02", "ilc_di01", "ilc_di11", "ilc_di12",
            "ilc_di03", "ilc_lk11", "ilc_li41")
 data <- lapply(codes, get_eurostat, stringsAsFactors = FALSE, time_format = "num")
 
@@ -28,6 +28,7 @@ df <- ldply(data)
 #filter indicators
 
 ginigraph_data <- df %>% filter(indic_il %in% "GINI_HND" & time %in% c("2008","2017"))
+
 s8020graph_data <- df %>% filter(indic_il %in% "S80_S20" & time %in% c("2008", "2017") & sex%in%"T" & age %in% "TOTAL")
 gini.EU <- filter(df, indic_il =="GINI_HND", time >= "2016")
 median.EU <- filter(df, indic_il =="MED_E", time >= "2016", unit=="EUR", sex=="T", age=="TOTAL")
@@ -81,8 +82,8 @@ ginigraph_data$geo <- factor(ginigraph_data$geo, levels = unique(ginigraph_data$
 
 
 p <- ggplot(ginigraph_data) +
-  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.2, "inches"), ends = "last", type = "open")) +
-  xlab("") + ylab("Gini Koeffizient (0-100)\n")  + scale_y_continuous(breaks = pretty(ginigraph_data$values.y, n=15)) + labs(title="Entwicklung des Gini Koeffizienten, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
+  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.12, "inches"), ends = "last", type = "open")) +
+  xlab("") + ylab("Gini Koeffizienten (0-100)\n")  + scale_y_continuous(breaks = pretty(ginigraph_data$values.y, n=15)) + labs(title="Entwicklung der Gini Koeffizienten der EU Länder, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
 
 p
 
@@ -115,11 +116,161 @@ s8020graph_data$geo <- factor(s8020graph_data$geo, levels = unique(s8020graph_da
 
 
 p <- ggplot(s8020graph_data) +
-  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.2, "inches"), ends = "last", type = "open")) +
-  xlab("") + ylab("S80/S20 Verhältnis\n")  + scale_y_continuous(breaks = pretty(s8020graph_data$values.y, n=15)) + labs(title="Entwicklung des S80/S20 Verhältnis, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
+  geom_segment( aes(x=factor(geo, level=geo), xend=factor(geo, level=geo), y=values.x, yend=values.y), color="blue",  arrow = arrow(angle = 30, length = unit(0.12, "inches"), ends = "last", type = "open")) +
+  xlab("") + ylab("S80/S20 Verhältnisse\n")  + scale_y_continuous(breaks = pretty(s8020graph_data$values.y, n=15)) + labs(title="Entwicklung der S80/S20 Verhältnisse der EU Länder, verfügbare Einkommen (2008 und 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: EU bezieht sich auf EU27 in 2008 und EU28\n in 2017; für Kroatien werden Werte aus 2010 und 2017 herangezogen")
 p
 
 ggsave(file='graphs/EU_s8020.svg',height=4,width=7)
+
+
+
+# gini time series --------------------------------------------------------
+
+gini <- get_eurostat(id = "ilc_di12", time_format = "num")
+gini_wop <- get_eurostat(id = "ilc_di12b", time_format = "num")
+gini_wp <- get_eurostat(id = "ilc_di12c", time_format = "num")
+
+gini$variable <- "disposable income"
+gini_wop$variable <- "di before transfers (without pensions)"
+gini_wp$variable <- "di before transfers (but with pensions)"
+
+hehe <- rbind(gini, gini_wop)
+hehe <- filter(hehe, time < 2018, time > 2004)
+
+hehe <- hehe %>% filter(geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                  "EE", "EL", "ES","FI", "FR", "HR", 
+                                  "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                  "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK", "EU27", "EU28"))
+
+#merge eu27 and eu28
+
+hehe[919,] <- c("GINI_HND","EU28",2005,30.6,"disposable income")
+hehe[920,] <- c("GINI_HND","EU28",2006,30.3,"disposable income")
+hehe[921,] <- c("GINI_HND","EU28",2007,30.6,"disposable income")
+hehe[922,] <- c("GINI_HND","EU28",2008,31.0,"disposable income")
+hehe[923,] <- c("GINI_HND","EU28",2009,30.6,"disposable income")
+
+hehe[924,] <- c("GINI_HND","EU28",2005,49.7,"di before transfers (without pensions)")
+hehe[925,] <- c("GINI_HND","EU28",2006,50.2,"di before transfers (without pensions)")
+hehe[926,] <- c("GINI_HND","EU28",2007,49.6,"di before transfers (without pensions)")
+hehe[927,] <- c("GINI_HND","EU28",2008,49.6,"di before transfers (without pensions)")
+hehe[928,] <- c("GINI_HND","EU28",2009,49.6,"di before transfers (without pensions)")
+
+
+eu <- hehe %>% filter(geo%in% c("EU28"))
+
+hehe <- hehe %>% filter(geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                  "EE", "EL", "ES","FI", "FR", "HR", 
+                                  "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                  "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK"))
+#hehe$EU <- ifelse(hehe$geo=="EU28", 1,0)
+#hehe$EU <- as.factor(hehe$EU)
+
+hehe$time <- as.integer(hehe$time)
+hehe$values <- as.numeric(hehe$values)
+hehe$cv <- as.factor(paste0(hehe$geo, "_", hehe$variable))
+
+
+hehe <- arrange(hehe, time)
+hehe$time <- paste0(hehe$time,"-01-01")
+hehe$time <- as.Date(hehe$time)
+
+eu$time <- paste0(eu$time,"-01-01")
+eu$time <- as.Date(eu$time)
+
+eu$values <- as.numeric(eu$values)
+eu$variable <- as.factor(eu$variable)
+
+hehe$EU4 <- ifelse(hehe$geo=="DE"| hehe$geo=="FR"| 
+                     hehe$geo=="IT"|
+                     hehe$geo=="UK", 1, 0)
+hehe$variable_eu4 <- paste0(hehe$variable, "_", hehe$EU4)
+hehe$variable_eu4 <- as.factor(hehe$variable_eu4)
+hehe$EU4 <- as.factor(hehe$EU4)
+
+ginid <- dcast(gini, geo ~ time, value.var = c("values"))
+# ginid_wop <- dcast(gini_wop, geo ~ time, value.var = c("values"))
+RColorBrewer::display.brewer.all()
+
+bla <- ggplot() + geom_point(data=hehe, aes(x=time, y=values, colour=variable_eu4, alpha=EU4))+ geom_line(data=hehe, aes(x=time, y=values, colour=variable_eu4, group=cv, alpha=EU4), size=0.8) + geom_line(data=eu, aes(x=time, y=values, group=variable), colour="yellow", size=1)+ geom_point(data=eu, aes(x=time, y=values, group=variable, fill="EU Durchschnitt"), colour="yellow") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + labs(x="", y="Gini Koeffizienten (0-100)", title="Entwicklung der Gini Koeffizienten der EU Länder, verfügbare Einkommen (2005 bis 2017)", caption = "Datenquelle: Eurostat,  Anmerkungen: Beim EU Durchschnitt der von Eurostat berechnet wird, handelt es\n sich um einen gewichteten Durchschnitt der von 2005-2009 27 und danach 28 Länder einbezieht.") + scale_colour_brewer(palette = "Paired", labels=c("Verfügbare Einkommen ohne Sozialtransfers und Pensionen (Rest EU)", "Verfügbare Einkommen ohne Sozialtransfers und Pensionen (DE, FR, IT, UK)", "Verfügbare Einkommen (Rest EU)", "Verfügbare Einkommen (DE, FR, IT, UK)")) + scale_alpha_discrete(range = c(0.3, 0.9)) + theme(legend.position = "bottom", legend.box = "horizontal", legend.direction = "vertical", legend.box.just = "left", legend.box.margin = margin(-25,0,-10,0), legend.justification = "left", plot.caption = element_text(size=8)) + guides(fill = guide_legend(title = NULL, label.theme = element_text(size=8)), alpha="none", colour = guide_legend(title = "Einkommensvariable", title.theme = element_text(size=10), label.theme = element_text(size = 8))) 
+
+bla
+
+ggsave(file='graphs/EU_gini_ts.svg',height=5,width=8)
+
+#legend wrap?
+
+#cross graph?
+
+
+# gini time series - EU15 only? --------------------------------------------------------
+#largest?
+#15.92+12.98+11.98+12.67 = ~53%
+
+
+gini <- get_eurostat(id = "ilc_di12", time_format = "num")
+gini_wop <- get_eurostat(id = "ilc_di12b", time_format = "num")
+gini_wp <- get_eurostat(id = "ilc_di12c", time_format = "num")
+
+gini$variable <- "disposable income"
+gini_wop$variable <- "di before transfers (without pensions)"
+gini_wp$variable <- "di before transfers (but with pensions)"
+
+hehe <- rbind(gini, gini_wop)
+hehe <- filter(hehe, time < 2018, time > 2004)
+
+hehe <- hehe %>% filter(geo%in% c("DE", "FR", 
+                                  "IT", 
+                                  "UK", "EU27", "EU28"))
+
+#merge eu27 and eu28
+
+hehe[919,] <- c("GINI_HND","EU28",2005,30.6,"disposable income")
+hehe[920,] <- c("GINI_HND","EU28",2006,30.3,"disposable income")
+hehe[921,] <- c("GINI_HND","EU28",2007,30.6,"disposable income")
+hehe[922,] <- c("GINI_HND","EU28",2008,31.0,"disposable income")
+hehe[923,] <- c("GINI_HND","EU28",2009,30.6,"disposable income")
+
+hehe[924,] <- c("GINI_HND","EU28",2005,49.7,"di before transfers (without pensions)")
+hehe[925,] <- c("GINI_HND","EU28",2006,50.2,"di before transfers (without pensions)")
+hehe[926,] <- c("GINI_HND","EU28",2007,49.6,"di before transfers (without pensions)")
+hehe[927,] <- c("GINI_HND","EU28",2008,49.6,"di before transfers (without pensions)")
+hehe[928,] <- c("GINI_HND","EU28",2009,49.6,"di before transfers (without pensions)")
+
+
+eu <- hehe %>% filter(geo%in% c("EU28"))
+
+hehe <- hehe %>% filter(geo%in% c("AT", "BE", "BG", "CY", "CZ", "DE", "DK", 
+                                  "EE", "EL", "ES","FI", "FR", "HR", 
+                                  "HU", "IE", "IT", "LT", "LU", "LV", "MT", 
+                                  "NL", "PL", "PT", "RO", "SE", "SI", "SK", "UK"))
+#hehe$EU <- ifelse(hehe$geo=="EU28", 1,0)
+#hehe$EU <- as.factor(hehe$EU)
+
+hehe$time <- as.integer(hehe$time)
+hehe$values <- as.numeric(hehe$values)
+hehe$cv <- as.factor(paste0(hehe$geo, "_", hehe$variable))
+
+
+hehe <- arrange(hehe, time)
+hehe$time <- paste0(hehe$time,"-01-01")
+hehe$time <- as.Date(hehe$time)
+
+eu$time <- paste0(eu$time,"-01-01")
+eu$time <- as.Date(eu$time)
+
+eu$values <- as.numeric(eu$values)
+eu$variable <- as.factor(eu$variable)
+
+# ginid <- dcast(gini, geo ~ time, value.var = c("values"))
+# ginid_wop <- dcast(gini_wop, geo ~ time, value.var = c("values"))
+
+
+bla <- ggplot() + geom_point(data=hehe, aes(x=time, y=values, colour=variable), alpha=0.5)+ geom_line(data=hehe, aes(x=time, y=values, colour=variable, group=cv), alpha=0.3) + geom_line(data=eu, aes(x=time, y=values, group=variable), colour="blue")+ geom_point(data=eu, aes(x=time, y=values, group=variable, fill="EU"), colour="blue") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + labs(x="") 
+
+bla
+
+
 
 
 
